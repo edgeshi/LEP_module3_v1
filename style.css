@@ -573,45 +573,71 @@ h1 {
 
 /* --- V1.5 Full-Screen Layouts --- */
 
-/* Step 2: Visual Novel Layout */
+/* Step 2: Visual Novel Layout using Grid */
 #step2 {
   position: relative;
-  overflow: hidden;
+  width: 100%;
+}
+
+.step2-flex {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
 }
 
 .vn-character-bg {
-  position: fixed;
-  bottom: 0px;
-  width: 45%;
-  height: 95vh;
+  position: sticky;
+  top: 15vh;
+  /* Comfortably pinned to viewport while scrolling */
+  height: max-content;
+  /* Allow the box to shrink-wrap the image, maximizing visibility vertically */
+  width: 0;
+  /* Huge flex trick: takes 0 width in the row so the transcript can be as wide as it wants */
   z-index: 0;
   pointer-events: none;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
+  /* Anchor them at the top of their sticky box so they don't hide out of bounds below */
 }
 
 .vn-character-bg.left {
-  left: -2%;
-  justify-content: flex-start;
-}
-
-.vn-character-bg.right {
-  right: -2%;
   justify-content: flex-end;
 }
 
+.vn-character-bg.right {
+  justify-content: flex-start;
+}
+
+.vn-character-bg.left img {
+  margin-right: -4rem;
+  /* Pull image tightly into the padding of the transcript box */
+}
+
+.vn-character-bg.right img {
+  margin-left: -4rem;
+  /* Pull image tightly into the padding of the transcript box */
+}
+
 .vn-character-bg img {
-  width: auto;
-  max-width: 100%;
-  max-height: 100%;
+  width: 65vw;
+  /* Need larger percentage to trigger 850px limit on smaller screens */
+  max-width: 850px;
+  /* Force huge massive image sizes */
+  min-width: 400px;
+  height: auto;
+  max-height: 120vh;
+  /* Removed 100% limit that was starving the width aspect ratio */
   object-fit: contain;
   object-position: bottom;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
 }
 
 #hotspotTranscript {
-  width: 40%;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+  /* Restored to 500px per user request */
   position: relative;
   z-index: 10;
   background: rgba(255, 255, 255, 0.7);
@@ -631,9 +657,10 @@ h1 {
 
 .winged-owl-bg {
   position: fixed;
-  bottom: -12vh;
+  bottom: -15vh;
   left: 0;
-  width: 100vw;
+  width: calc(100vw - 320px);
+  /* stop before the notes panel */
   height: 50vh;
   z-index: 20;
   pointer-events: none;
