@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interpreter Collaboration Module | Nursing Excellence</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div>
+                <span class="role-label" style="color: var(--accent-color)">Module 2</span>
+                <h1>Pre-Briefing with the Interpreter</h1>
+            </div>
+            <div class="step-indicator" id="stepIndicator">
+                <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+            </div>
+        </header>
+
+        <main id="mainContent">
+            <!-- Content will be injected by main.js -->
+        </main>
+
+        <footer style="margin-top: auto; padding-top: 2rem; display: flex; justify-content: space-between;">
+            <div id="navLeft"></div>
+            <div id="navRight">
+                <button class="btn" id="nextBtn">Continue <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg></button>
+            </div>
+        </footer>
+    </div>
+    <script src="./shared.js"></script>
+    <script src="./submodule2.js"></script>
+</body>
+
+</html>

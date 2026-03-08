@@ -4,44 +4,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interpreter Collaboration Module | Nursing Excellence</title>
+    <title>Module 3: Interpreter Collaboration | Nursing Excellence</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .module-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .module-card p {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .module-card .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .module-disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
         <header>
             <div>
-                <span class="role-label" style="color: var(--accent-color)">Module 2</span>
-                <h1>Pre-Briefing with the Interpreter</h1>
-            </div>
-            <div class="step-indicator" id="stepIndicator">
-                <div class="step-dot active"></div>
-                <div class="step-dot"></div>
-                <div class="step-dot"></div>
-                <div class="step-dot"></div>
+                <span class="role-label" style="color: var(--accent-color)">Module 3</span>
+                <h1>Running a High-Quality Interpreted Encounter</h1>
             </div>
         </header>
 
-        <main id="mainContent">
-            <!-- Content will be injected by main.js -->
-        </main>
+        <main>
+            <p>Welcome to Module 3. Please select a submodule below to continue your training.</p>
 
-        <footer style="margin-top: auto; padding-top: 2rem; display: flex; justify-content: space-between;">
-            <div id="navLeft"></div>
-            <div id="navRight">
-                <button class="btn" id="nextBtn">Continue <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg></button>
+            <div class="module-grid">
+                <!-- Submodule 1 -->
+                <div class="module-card module-disabled">
+                    <h3>Submodule 1</h3>
+                    <p>Sections 0 & 1</p>
+                    <button class="btn btn-outline" disabled>Coming Soon</button>
+                </div>
+
+                <!-- Submodule 2 -->
+                <div class="module-card">
+                    <h3>Submodule 2</h3>
+                    <p>Sections 2 & 3: Pre-Briefing with the Interpreter</p>
+                    <a href="submodule2.html" class="btn" style="display: block;">Start Submodule 2</a>
+                </div>
+
+                <!-- Submodule 3 -->
+                <div class="module-card module-disabled">
+                    <h3>Submodule 3</h3>
+                    <p>Sections 4 & 5</p>
+                    <button class="btn btn-outline" disabled>Coming Soon</button>
+                </div>
+
+                <!-- Submodule 4 -->
+                <div class="module-card module-disabled">
+                    <h3>Submodule 4</h3>
+                    <p>Sections 6, 7 & 8</p>
+                    <button class="btn btn-outline" disabled>Coming Soon</button>
+                </div>
             </div>
-        </footer>
+        </main>
     </div>
-    <script src="./main.js"></script>
+    <script src="./shared.js"></script>
 </body>
 
 </html>
