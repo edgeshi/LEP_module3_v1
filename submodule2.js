@@ -9,7 +9,9 @@ const appState = {
         risk: false,
         culture: false,
         turntaking: false
-    }
+    },
+    section3Active: false, // Flag for Section 3
+    dragErrors: 0 // Track errors in Section 3 activity
 };
 
 const CHAR_ICONS = {
@@ -46,14 +48,14 @@ const scriptHotspots = [
 
 function init() {
     renderStep();
-    document.getElementById('nextBtn').addEventListener('click', nextStep);
+    document.getElementById('nextBtn').onclick = nextStep;
     // Notes initialization and DOM click handlers have been moved globally to shared.js
     // so they can persist dynamically on index.html and submodule1.html without duplicate code.
 }
 
 
 function nextStep() {
-    if (appState.currentStep < 3) {
+    if (appState.currentStep < 7) {
         appState.currentStep++;
 
         // Trigger generic Blue Notes unlock at Step 2 (Analysis phase)
@@ -70,10 +72,15 @@ function nextStep() {
             }
         }
 
-        // Unlock Module 3 on Hub when finishing Submodule 2
-        if (appState.currentStep === 3) {
+        // Unlock Module 3 on Hub when finishing Submodule 2 (End of Section 3, Step 7)
+        if (appState.currentStep === 7) {
             let curr = parseInt(localStorage.getItem('module3_unlockLevel') || '1');
             if (curr < 3) localStorage.setItem('module3_unlockLevel', '3');
+        }
+
+        // When crossing into Section 3 (Step 4)
+        if (appState.currentStep >= 4) {
+            appState.section3Active = true;
         }
 
         renderStep();
@@ -84,12 +91,22 @@ function renderStep() {
     const main = document.getElementById('mainContent');
     const indicator = document.getElementById('stepIndicator');
     const dots = indicator.querySelectorAll('.step-dot');
+    const headerTitle = document.getElementById('sectionTitle');
 
-    // Update dots
+    if (appState.section3Active && headerTitle) {
+        headerTitle.innerText = "Section 3: Pre-Briefing with the Patient";
+    }
+
+    // Update dots (0-3 for sec2, 4-7 for sec3)
+    let relativeStep = appState.currentStep;
+    if (appState.currentStep >= 4) {
+        relativeStep = appState.currentStep - 4;
+    }
+
     dots.forEach((dot, idx) => {
         dot.className = 'step-dot';
-        if (idx === appState.currentStep) dot.classList.add('active');
-        if (idx < appState.currentStep) dot.classList.add('completed');
+        if (idx === relativeStep) dot.classList.add('active');
+        if (idx < relativeStep) dot.classList.add('completed');
     });
 
     main.innerHTML = '';
@@ -106,6 +123,30 @@ function renderStep() {
             break;
         case 3:
             renderResults(main);
+            break;
+        case 4:
+            renderSection3Start(main);
+            break;
+        case 5:
+            renderSection3PoorVideo(main);
+            break;
+        case 6:
+            renderSection3DragActivity(main);
+            const patNotes = document.getElementById('sec3PatientNotes');
+            if (patNotes) {
+                patNotes.style.display = 'block';
+                setTimeout(() => {
+                    patNotes.style.opacity = '1';
+                }, 50);
+            }
+            // Automatically open Notes Panel to draw attention
+            const notesPanel = document.getElementById('globalNotes');
+            if (notesPanel && notesPanel.classList.contains('collapsed')) {
+                notesPanel.querySelector('#notesHeader').click();
+            }
+            break;
+        case 7:
+            renderSection3Results(main);
             break;
     }
 }
@@ -280,7 +321,7 @@ function renderTriangle(container) {
                             Only Follow at Actions
                         </div>
 
-                        <h4 style="margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.6rem;">Pre-briefing</h4>
+                        <h4 style="margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.6rem;">Pre-briefing with interpreters</h4>
                         <p style="font-size: 1rem; line-height: 1.5; font-weight: 500; margin-bottom: 1rem; color: #1e3a8a;">
                             A successful pre-briefing with interpreters should cover:
                         </p>
@@ -568,12 +609,11 @@ function renderResults(container) {
     `;
 
     const nextBtn = document.getElementById('nextBtn');
-    nextBtn.innerHTML = 'Restart Module ↻';
+    nextBtn.innerHTML = 'Continue to Section 3 →';
     nextBtn.onclick = () => {
-        appState.currentStep = 0;
-        appState.points = 0;
-        for (let key in appState.evaluation) appState.evaluation[key] = false;
-        init();
+        appState.currentStep = 4;
+        appState.section3Active = true;
+        init(); // re-init event listeners, renderStep
         document.getElementById('nextBtn').innerHTML = 'Continue →';
         document.getElementById('nextBtn').onclick = nextStep;
     };
@@ -588,6 +628,224 @@ function renderCriterion(label, met) {
                 ${met ? 'Met' : 'Missed'}
             </div>
         </li>
+    `;
+}
+
+function renderSection3Start(container) {
+    container.innerHTML = `
+        <div class="subtitle">Step 1: Content Delivery (15 sec)</div>
+        <div class="glass-card" style="text-align: center; padding: 1rem;">
+            <video src="./assets/video 3.mp4" controls autoplay style="width: 100%; max-width: 800px; border-radius: var(--radius-lg); box-shadow: 0 10px 30px rgba(0,0,0,0.15); background: black;"></video>
+            <p style="color: var(--text-muted); margin-top: 1rem; text-align: left;">Observe how effectively the RN pre-briefs the patient on what to expect during the interpreted encounter.</p>
+        </div>
+    `;
+
+    document.getElementById('nextBtn').onclick = nextStep;
+    document.getElementById('nextBtn').innerHTML = 'Continue <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+}
+
+function renderSection3PoorVideo(container) {
+    container.innerHTML = `
+        <div class="subtitle">Step 2: Analysis (1 min)</div>
+        <div class="glass-card" style="text-align: center; padding: 1rem;">
+            <h3 style="color: var(--danger); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                Poor Pre-briefing Example
+            </h3>
+            <video src="./assets/video 4.mp4" controls autoplay style="width: 100%; max-width: 800px; border-radius: var(--radius-lg); box-shadow: 0 10px 30px rgba(0,0,0,0.15); background: black;"></video>
+            <p style="color: var(--text-muted); margin-top: 1rem; text-align: left;">Notice the confusion and lack of structure when the patient isn't properly prepared for the interpreter's role. Contrast this with the good example from the previous step.</p>
+        </div>
+    `;
+
+    document.getElementById('nextBtn').onclick = nextStep;
+    document.getElementById('nextBtn').innerHTML = 'Continue <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+}
+
+function renderSection3DragActivity(container) {
+    container.innerHTML = `
+        <div class="subtitle">Step 3: Learner Activity</div>
+        <div style="position: relative; margin-top: 5rem;">
+            <!-- Patient image overlapping the top edge -->
+            <img src="./assets/patient_down.png" alt="Patient character" style="position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 300px; z-index: 10; pointer-events: none;">
+            
+            <div class="glass-card" style="padding: 3.5rem 3rem 2.5rem 3rem; position: relative; z-index: 5;">
+                <h3 style="color: var(--text-main); margin-bottom: 0.5rem; text-align: center; font-size: 1.6rem;">Drag-and-drop Challenge</h3>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1.1rem;">
+                Place each statement into the correct category: <strong>Good Opening</strong> or <strong>Incorrect Opening</strong>.
+            </p>
+
+            <!-- Items to drag -->
+            <div id="dragItems" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; min-height: 80px;">
+                <div class="draggable-item" draggable="true" data-type="good" id="item1">"Hello, this is your interpreter Ana."</div>
+                <div class="draggable-item" draggable="true" data-type="bad" id="item2">"Tell her we need vitals."</div>
+                <div class="draggable-item" draggable="true" data-type="good" id="item3">"Do you hear clearly?"</div>
+                <div class="draggable-item" draggable="true" data-type="bad" id="item4">"Interpreter, ask her about pain."</div>
+            </div>
+            
+            <!-- Drop zones -->
+            <div style="display: flex; gap: 2rem; justify-content: center;">
+                <div class="drop-zone" id="goodDropZone" data-accept="good" style="flex: 1; border: 2px dashed var(--success); border-radius: 8px; padding: 1.5rem; min-height: 200px; background: rgba(101, 163, 13, 0.05); display: flex; flex-direction: column; align-items: center;">
+                    <h4 style="color: var(--success); text-align: center; margin-bottom: 1rem; width: 100%; border-bottom: 1px solid rgba(101, 163, 13, 0.2); padding-bottom: 0.5rem;">Good Opening</h4>
+                    <div class="drop-content" style="width: 100%; display: flex; flex-direction: column; gap: 0.5rem; min-height: 100px;"></div>
+                </div>
+                <div class="drop-zone" id="badDropZone" data-accept="bad" style="flex: 1; border: 2px dashed var(--danger); border-radius: 8px; padding: 1.5rem; min-height: 200px; background: rgba(239, 68, 68, 0.05); display: flex; flex-direction: column; align-items: center;">
+                    <h4 style="color: var(--danger); text-align: center; margin-bottom: 1rem; width: 100%; border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding-bottom: 0.5rem;">Incorrect Opening</h4>
+                    <div class="drop-content" style="width: 100%; display: flex; flex-direction: column; gap: 0.5rem; min-height: 100px;"></div>
+                </div>
+            </div>
+
+            <div id="dragFeedback" style="text-align: center; margin-top: 2rem; min-height: 24px; font-weight: bold; position: relative; z-index: 20;"></div>
+            </div>
+            
+            <!-- Nurse image overlapping the bottom edge -->
+            <img src="./assets/nurse_back.png" alt="Nurse character" style="position: absolute; bottom: -180px; left: 50%; transform: translateX(-50%); width: 450px; z-index: 10; pointer-events: none;">
+        </div>
+    `;
+
+    // -----------------------------------------
+    // Set up Drag and Drop Logistics
+    // -----------------------------------------
+    const draggables = container.querySelectorAll('.draggable-item');
+    const dropZones = container.querySelectorAll('.drop-zone');
+    const dragFeedback = container.querySelector('#dragFeedback');
+    let draggedItem = null;
+    let placedCount = 0;
+    const totalItems = draggables.length;
+
+    draggables.forEach(item => {
+        item.addEventListener('dragstart', function (e) {
+            draggedItem = this;
+            setTimeout(() => this.classList.add('dragging'), 0);
+            e.dataTransfer.effectAllowed = 'move';
+        });
+
+        item.addEventListener('dragend', function () {
+            draggedItem = null;
+            this.classList.remove('dragging');
+            dropZones.forEach(z => z.classList.remove('drag-over'));
+        });
+    });
+
+    dropZones.forEach(zone => {
+        zone.addEventListener('dragover', function (e) {
+            e.preventDefault(); // Necessary to allow dropping
+            this.classList.add('drag-over');
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        });
+
+        zone.addEventListener('dragenter', function (e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        });
+
+        zone.addEventListener('dragleave', function () {
+            this.classList.remove('drag-over');
+        });
+
+        zone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+
+            if (draggedItem) {
+                const requiredType = this.getAttribute('data-accept');
+                const itemType = draggedItem.getAttribute('data-type');
+
+                if (requiredType === itemType) {
+                    // Success dropping
+                    this.querySelector('.drop-content').appendChild(draggedItem);
+                    draggedItem.setAttribute('draggable', 'false'); // Lock it in
+                    draggedItem.style.cursor = 'default';
+                    placedCount++;
+
+                    dragFeedback.style.color = 'var(--success)';
+                    dragFeedback.innerText = "Correct match!";
+
+                    if (placedCount === totalItems) {
+                        dragFeedback.innerHTML = "<span style='font-size: 1.2rem;'>🎉 Excellent work! All statements categorized correctly.</span>";
+                        document.getElementById('nextBtn').style.display = 'inline-flex';
+                    } else {
+                        setTimeout(() => { if (dragFeedback.innerText === "Correct match!") dragFeedback.innerText = ""; }, 1500);
+                    }
+                } else {
+                    // Failed dropping
+                    appState.dragErrors++;
+                    dragFeedback.style.color = 'var(--danger)';
+                    dragFeedback.innerText = "Oops! Try thinking about third-person language and clarity.";
+
+                    // Shake animation for error
+                    draggedItem.style.transform = 'translateX(10px)';
+                    setTimeout(() => draggedItem.style.transform = 'translateX(-10px)', 100);
+                    setTimeout(() => draggedItem.style.transform = 'translateX(10px)', 200);
+                    setTimeout(() => draggedItem.style.transform = 'translateX(0)', 300);
+
+                    setTimeout(() => { if (dragFeedback.innerText.includes("Oops")) dragFeedback.innerText = ""; }, 2500);
+                }
+            }
+        });
+    });
+
+    // Make the next button hidden until they finish the activity
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.style.display = 'none';
+    nextBtn.onclick = () => {
+        nextBtn.style.display = 'inline-flex'; // reset for next steps
+        nextStep();
+    };
+    nextBtn.innerHTML = 'Continue to Evaluation <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+}
+
+// We map renderSection3NotesUpdate as an automatic side-effect to simply revealing the Patient notes 
+// without needing a dedicated step for them, as they happen "between" poor video and this activity.
+// Actually, earlier we made step 6 renderSection3NotesUpdate. Let's redirect notes revealing safely.
+
+function renderSection3Results(container) {
+    let title = "";
+    let icon = "";
+    let feedbackIntro = "";
+    let suggestion = "";
+    let scoreText = "";
+    const errors = appState.dragErrors;
+
+    if (errors === 0) {
+        title = "Pre-Briefing Owl";
+        icon = '<img src="./assets/2. Pre-Briefing Owl.png" style="width:260px; height:260px; object-fit:contain;">';
+        feedbackIntro = "Flawless categorization! You correctly identified all the proper ways to address the patient during pre-briefing.";
+        suggestion = "Your understanding of third-person language and setting ground rules is excellent. You are fully prepared to run a high-quality interpreted encounter.";
+        scoreText = '<span style="color: var(--success)">Perfect (0 Errors)</span>';
+    } else if (errors <= 2) {
+        title = "Turn-Taking Tern";
+        icon = '<img src="./assets/3. Turn-Taking Tern.png" style="width:260px; height:260px; object-fit:contain;">';
+        feedbackIntro = "Good effort, but you had a few missteps when matching the correct opening statements.";
+        suggestion = "Pay closer attention to speaking directly to the patient rather than giving commands to the interpreter. Review the pre-briefing notes to solidify this habit.";
+        scoreText = `<span style="color: var(--warning)">${errors} Errors</span>`;
+    } else {
+        title = "Swift Triage Sparrow";
+        icon = '<img src="./assets/1. Swift Triage Sparrow.png" style="width:260px; height:260px; object-fit:contain;">';
+        feedbackIntro = "You completed the activity, but frequent errors show a need to review the basics.";
+        suggestion = "Remember to always speak directly to the patient in the first person. Take some time to review the interpretation method and turn-taking rules in your notes.";
+        scoreText = `<span style="color: var(--danger)">${errors} Errors</span>`;
+    }
+
+    container.innerHTML = `
+        <div class="subtitle">Step 4: AI Evaluation</div>
+        
+        <div class="badge-container">
+            <div class="badge-icon">${icon}</div>
+            <div class="badge-title">${title}</div>
+            <div class="feedback-text">${feedbackIntro} <br><br> ${suggestion}</div>
+        </div>
+
+        <div class="glass-card">
+            <h3 style="text-align: center;">Activity Performance: ${scoreText}</h3>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <p style="color: var(--success); font-weight: bold; margin-bottom: 1rem;">Module 3 Completed!</p>
+            <button class="btn" onclick="window.location.href='index.html'" style="background: var(--success);">
+                Return to Hub
+            </button>
+        </div>
     `;
 }
 

@@ -862,3 +862,51 @@ h1 {
   opacity: 1;
   visibility: visible;
 }
+/* --- Drag and Drop Activity --- */
+.draggable-item {
+  background: white;
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  cursor: grab;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: transform 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+
+.draggable-item:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.draggable-item.dragging {
+  opacity: 0.5;
+}
+
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.drop-zone.drag-over {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+.drop-zone .draggable-item {
+  cursor: default;
+  transform: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+.drag-success-msg {
+  color: var(--success);
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1rem;
+  animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
