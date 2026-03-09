@@ -137,6 +137,20 @@ function renderStep() {
                 patNotes.style.display = 'block';
                 setTimeout(() => {
                     patNotes.style.opacity = '1';
+
+                    // Recalculate height for textareas previously crushed by display: none
+                    const textareas = patNotes.querySelectorAll('.inline-user-note');
+                    textareas.forEach(t => {
+                        if (t.value) {
+                            t.style.height = 'auto';
+                            t.style.height = (t.scrollHeight) + 'px';
+                        }
+                    });
+
+                    // Crucial: Re-bind localStorage events to the freshly revealed textareas
+                    if (typeof setupInlineNotes === 'function') {
+                        setupInlineNotes();
+                    }
                 }, 50);
             }
             // Automatically open Notes Panel to draw attention

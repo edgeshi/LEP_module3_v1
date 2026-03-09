@@ -237,6 +237,9 @@ function setupInlineNotes() {
 
     // Load existing notes from localStorage
     textareas.forEach(textarea => {
+        if (textarea.dataset.initialized) return; // Prevent duplicate listeners
+        textarea.dataset.initialized = 'true';
+
         const noteId = textarea.id; // e.g. 'userNote-1'
         if (!noteId) return;
 
@@ -274,7 +277,11 @@ function setupInlineNotes() {
         if (parent) {
             const btn = parent.querySelector('.add-note-btn');
             if (btn) {
-                btn.addEventListener('click', () => {
+                // Remove old listeners by cloning
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+
+                newBtn.addEventListener('click', () => {
                     textarea.classList.remove('hidden');
                     textarea.focus();
                 });
@@ -295,7 +302,7 @@ function showNotesToast() {
         toast = document.createElement('div');
         toast.id = 'notesToast';
         toast.className = 'notes-toast';
-        toast.innerText = 'You can also add your own notes, all the notes here will be downloadable when you finish the whole Module 3';
+        toast.innerHTML = 'Add your thoughts by "+"<br><br>Download at the end of Module 3.';
         notesPanel.appendChild(toast);
     }
 
