@@ -849,6 +849,13 @@ function renderSection3Results(container) {
     localStorage.setItem('module3_sec3_suggestion', suggestion);
     if (typeof syncNotesState === 'function') syncNotesState();
 
+    // Automatically open Notes Panel to draw attention
+    const notesPanel = document.getElementById('globalNotes');
+    if (notesPanel && notesPanel.classList.contains('collapsed')) {
+        const header = notesPanel.querySelector('#notesHeader');
+        if (header) header.click();
+    }
+
     container.innerHTML = `
         <div class="subtitle">Step 4: AI Evaluation</div>
         
