@@ -4,72 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Section 1: Introduction | Module 3</title>
+    <title>Section 0: Directly talking to the patient | Module 3</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        .completion-banner {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 2rem;
-            display: none;
-        }
-    </style>
 </head>
 
 <body>
     <div id="app" style="max-width: 1200px;">
         <header>
-            <div id="navLeft"></div>
             <div>
                 <span class="role-label" style="color: var(--accent-color)">Module 3: Running a High-Quality Interpreted
                     Encounter</span>
-                <h1>Section 1: Introduction & The Communication Triangle</h1>
+                <h1 id="sectionTitle">Section 0: Directly talking to the patient by turn-taking speech with the
+                    interpreter</h1>
             </div>
             <div class="step-indicator" id="stepIndicator">
                 <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
             </div>
         </header>
 
-        <main id="mainContent" style="padding-right: 320px;">
-            <div class="card" style="margin-bottom: 2rem;">
-                <h2 style="color: var(--primary-color); margin-top: 0;">Welcome to Module 3</h2>
-                <p style="font-size: 1.1rem; line-height: 1.6; color: var(--secondary-color);">
-                    In this module, you will learn the best practices for collaborating with interpreters during
-                    clinical interactions.
-                    We are going to introduce you to the <strong>Communication Triangle</strong> framework.
-                </p>
-
-                <div
-                    style="background: #f8fafc; border: 1px dashed #cbd5e1; padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem;">
-                    <h3 style="color: #0f172a; margin-top: 0;">The Communication Triangle</h3>
-                    <p style="color: #334155;">The triangle consists of three equal parties cooperating harmoniously:
-                    </p>
-                    <ul style="color: #475569; margin-bottom: 0;">
-                        <li><strong>Nurse (RN):</strong> Guides the session.</li>
-                        <li><strong>Interpreter:</strong> Translates cultures and languages.</li>
-                        <li><strong>Patient:</strong> Follows the session and provides personal health context.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <button id="completeBtn" class="btn" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
-                Acknowledge & Complete Section 1
-            </button>
-
-            <div id="completionBanner" class="completion-banner">
-                <h3 style="color: #15803d; margin-top: 0;">🎉 Section 1 Completed!</h3>
-                <p style="color: #166534; font-size: 1.1rem; margin-bottom: 1.5rem;">
-                    You have unlocked <strong>Submodule 2</strong> and the <em>Communication Triangle</em> has been
-                    globally added to your Notes Panel.
-                </p>
-                <a href="index.html" class="btn">Return to Hub</a>
-            </div>
+        <main id="mainContent" style="padding-right: 300px;">
+            <!-- Content will be injected by submodule1.js -->
         </main>
 
         <!-- Global Notes Panel (Hidden inherently until unlocked) -->
@@ -100,7 +59,7 @@
 
                 <!-- Green Content -->
                 <div class="green-content"
-                    style="flex: 0 0 240px; display: none; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: visible; padding-right: 10px;">
+                    style="flex: 0 0 240px; opacity: 0; transition: opacity 0.3s; display: none; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: visible; padding-right: 10px;">
                     <div
                         style="background: rgba(34, 197, 94, 0.1); color: #15803d; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1.5rem; border: 1px solid rgba(34, 197, 94, 0.3);">
                         Always Bear in Mind
@@ -274,45 +233,34 @@
                                 placeholder="Add personal note..."></textarea>
                         </li>
                     </ul>
-                        <div id="sec3PatientNotesSuggestion"
-                            style="display: none; margin-top: 1.5rem; background: #eff6ff; padding: 1.2rem; border-radius: 8px; border: 1px solid #bfdbfe; position: relative;">
-                            <span
-                                style="position: absolute; top: -10px; left: 15px; background: #eff6ff; padding: 0 8px; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #1e3a8a; border: 1px solid #bfdbfe; border-radius: 10px;">AI
-                                Personalized Feedback</span>
-                            <p id="sec3PatientNotesFeedbackText"
-                                style="font-size: 0.95rem; color: #172554; margin: 0; font-style: italic;">
-                            </p>
-                        </div>
+                    <div id="sec3PatientNotesSuggestion"
+                        style="display: none; margin-top: 1.5rem; background: #eff6ff; padding: 1.2rem; border-radius: 8px; border: 1px solid #bfdbfe; position: relative;">
+                        <span
+                            style="position: absolute; top: -10px; left: 15px; background: #eff6ff; padding: 0 8px; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #1e3a8a; border: 1px solid #bfdbfe; border-radius: 10px;">AI
+                            Personalized Feedback</span>
+                        <p id="sec3PatientNotesFeedbackText"
+                            style="font-size: 0.95rem; color: #172554; margin: 0; font-style: italic;">
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <footer
+            style="margin-top: auto; padding-top: 2rem; display: flex; justify-content: space-between; padding-right: 320px;">
+            <div id="navLeft"></div>
+            <div id="navRight">
+                <button class="btn" id="nextBtn">Continue <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg></button>
+            </div>
+        </footer>
     </div>
 
     <script src="./shared.js"></script>
-    <script>
-        document.getElementById('completeBtn').addEventListener('click', function () {
-            // Unlock Hub Progress Level 2 (Submodule 2 unlocked)
-            let curr = parseInt(localStorage.getItem('module3_unlockLevel') || '1');
-            if (curr < 2) localStorage.setItem('module3_unlockLevel', '2');
-
-            // Unlock Green Content globally in the Notes Hub array
-            let notesData = localStorage.getItem('module3_notesUnlocked');
-            let unlocked = notesData ? JSON.parse(notesData) : [];
-            if (!unlocked.includes('green')) {
-                unlocked.push('green');
-                localStorage.setItem('module3_notesUnlocked', JSON.stringify(unlocked));
-            }
-
-            // Visually fire the green sidebar instantly, hide button, show completion
-            syncNotesState();
-            if (typeof triggerNotesUpdateAnimation === 'function') {
-                triggerNotesUpdateAnimation();
-            }
-            this.style.display = 'none';
-            document.getElementById('completionBanner').style.display = 'block';
-        });
-    </script>
+    <script src="./submodule1.js"></script>
 </body>
 
 </html>

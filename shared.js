@@ -218,6 +218,7 @@ function triggerNotesUpdateAnimation() {
     const notesPanel = document.getElementById('globalNotes');
     const toggleIcon = document.getElementById('notesToggleIcon');
     const blueContent = notesPanel?.querySelector('.blue-content');
+    const greenContent = notesPanel?.querySelector('.green-content');
 
     if (notesPanel) {
         // Force the panel open
@@ -229,12 +230,16 @@ function triggerNotesUpdateAnimation() {
             showNotesToast();
             if (typeof showNotesUpdatedToast === 'function') showNotesUpdatedToast();
 
-            if (blueContent) {
-                setTimeout(() => {
+            setTimeout(() => {
+                if (blueContent && window.getComputedStyle(blueContent).display !== 'none') {
                     blueContent.style.opacity = '1';
                     blueContent.style.pointerEvents = 'auto';
-                }, 200);
-            }
+                }
+                if (greenContent && window.getComputedStyle(greenContent).display !== 'none') {
+                    greenContent.style.opacity = '1';
+                    greenContent.style.pointerEvents = 'auto';
+                }
+            }, 200);
         }
 
         // Add the glow class, then remove it after the 2s animation completes
