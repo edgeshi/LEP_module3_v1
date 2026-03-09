@@ -387,8 +387,18 @@ h1 {
 
 .badge-icon {
   font-size: 4rem;
-  margin-bottom: 1rem;
-  animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-bottom: -1rem;
+  animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), badgeGlow 2s infinite alternate ease-in-out;
+}
+
+@keyframes badgeGlow {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(222, 184, 135, 0.4));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 25px rgba(222, 184, 135, 1));
+  }
 }
 
 @keyframes bounceIn {

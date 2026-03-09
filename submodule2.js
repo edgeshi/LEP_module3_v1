@@ -331,8 +331,14 @@ function renderTriangle(container) {
 
 function renderActivity(container) {
     container.innerHTML = `
-        <div id="step4" style="position:relative; width:100%; height:100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5vh;">
-            <div style="position:relative; z-index:10; background: rgba(255,255,255,0.95); padding: 3rem 4rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid rgba(255,255,255,0.8); width: 650px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        <div id="step4" style="position:relative; width:100%; height:100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 15vh;">
+            
+            <!-- Top Interpreter Bird (Matching the reference screenshot) -->
+            <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 15; width: calc(100vw - 320px); display: flex; justify-content: center; pointer-events: none;">
+                <img src="./assets/interpreter_down.png" alt="Interpreter Bird Looking Down" style="width: auto; max-width: 100%; height: 25vh; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));">
+            </div>
+
+            <div style="position:relative; z-index:10; background: rgba(255,255,255,0.95); padding: 3rem 4rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid rgba(255,255,255,0.8); width: 650px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); margin-top: -2vh;">
                 <div style="color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px; margin-bottom: 1rem;">Step 3: Learner Activity (1 min)</div>
                 <h3 style="font-size: 1.5rem; color: #1e293b; margin-bottom: 2rem;">Your 30-second Pre-Brief Challenge</h3>
                 <p style="color: #475569; font-size: 1.1rem; margin-bottom: 0.5rem;">Record an audio message covering:</p>
@@ -484,24 +490,52 @@ function evaluateTranscription(text) {
 }
 
 function getBadgeDetails(points, e) {
-    if (points === 5) return { title: "Pre-Briefing Owl", icon: "🦉🌟", feedback: "You clearly stated goals, risks, jargon, and expectations before starting. Your structure prevents confusion later in the encounter." };
-    if (points === 0) return { title: "Swift Triage Sparrow", icon: "🐣", feedback: "You prepared efficiently before connecting to the interpreter. Your workflow awareness reduces delays without sacrificing safety." };
+    if (points === 5) {
+        return {
+            title: "Pre-Briefing Owl",
+            icon: '<img src="./assets/2. Pre-Briefing Owl.png" style="width:260px; height:260px; object-fit:contain;">',
+            feedback: "Excellent work explicitly covering all critical pre-brief elements! Your thorough preparation will prevent confusion and ensure a seamless encounter."
+        };
+    }
 
-    if (e.culture && e.risk && e.jargon) return { title: "Insightful Heron", icon: "🦩🧠", feedback: "Your responses showed strong clinical reasoning and contextual awareness. You integrated literacy, risk, and patient condition thoughtfully." };
-    if (e.turntaking && e.goal && e.risk) return { title: "Precision Falcon", icon: "🦅🎯", feedback: "You delivered concise, well-structured explanations with minimal overload. Your logical flow increased efficiency and safety." };
-    if (e.goal && e.culture) return { title: "Continuity Crane", icon: "🦢🔁", feedback: "You connected opening, teaching, and closing with intention. Your communication fosters sustained trust beyond a single encounter." };
-    if (e.jargon && e.goal) return { title: "Teach-Back Swan", icon: "🦢🔄", feedback: "You verified understanding instead of assuming it. Your confirmation habits strengthened safety and retention." };
-    if (e.risk && e.goal) return { title: "Consent Dove", icon: "�️⚖️", feedback: "You demonstrated strong awareness in high-risk or legally sensitive conversations. Your structure supports ethical and compliant practice." };
-    if (e.turntaking && e.jargon) return { title: "Documentation Duck", icon: "🦆📝", feedback: "You accurately distinguished between debrief and charting requirements. Your documentation protects both patient safety and legal integrity." };
+    // First figure out what to suggest doing better based on missed points
+    let suggestion = "Next time, try to remember to address all 5 key elements of the pre-briefing.";
+    if (!e.goal) suggestion = "Next time, make sure to explicitly state the goal of the interaction.";
+    else if (!e.jargon) suggestion = "Next time, remember to flag any expected medical jargon to clarify the translation.";
+    else if (!e.risk) suggestion = "Next time, try to identify patient risks like mental state or health literacy.";
+    else if (!e.culture) suggestion = "Next time, don't forget to invite the interpreter's cultural insights.";
+    else if (!e.turntaking) suggestion = "Next time, remember to establish clear turn-taking rules upfront.";
 
-    if (e.culture) return { title: "Cultural Canary", icon: "🐤🌍", feedback: "You actively invited cultural insight and showed openness to mediation. Your communication reflected respect beyond literal translation." };
-    if (e.risk) return { title: "Listening Lark", icon: "🐦👂", feedback: "You noticed emotional cues or confusion signals and responded appropriately. Your attentiveness prevented silent misunderstandings." };
-    if (e.jargon) return { title: "Plain-Language Chickadee", icon: "��️", feedback: "You transformed complex medical language into understandable terms. Your clarity directly improved patient comprehension." };
-    if (e.turntaking) return { title: "Turn-Taking Tern", icon: "🕊️⏱️", feedback: "You maintained clean, intentional pacing during interpreted speech. Your rhythm reduced overload for both interpreter and patient." };
-    if (e.goal) return { title: "Warm-Start Flamingo", icon: "🦩🤝", feedback: "You built trust from the first interaction moment. Your introduction reduced anxiety and increased patient engagement." };
+    if (e.turntaking) {
+        return {
+            title: "Turn-Taking Tern",
+            icon: '<img src="./assets/3. Turn-Taking Tern.png" style="width:260px; height:260px; object-fit:contain;">',
+            feedback: "You maintained clean, intentional pacing which reduces overload during interpreted speech. " + suggestion
+        };
+    }
 
-    if (points >= 3) return { title: "Accuracy Albatross", icon: "🐦📊", feedback: "You demonstrated high scoring consistency across activities. Your performance reflects reliable knowledge integration." };
-    return { title: "Steady Penguin", icon: "🐧🧊", feedback: "You maintained calm and clarity under pressure. Your composed presence stabilized complex interactions." };
+    if (e.jargon) {
+        return {
+            title: "Plain-Language Chickadee",
+            icon: '<img src="./assets/4. Plain-Language Chickadee.png" style="width:260px; height:260px; object-fit:contain;">',
+            feedback: "You did a great job identifying complex medical language to improve patient comprehension. " + suggestion
+        };
+    }
+
+    if (e.goal || e.risk || e.culture) {
+        return {
+            title: "Teach-Back Swan",
+            icon: '<img src="./assets/5. Teach-Back Swan.png" style="width:260px; height:260px; object-fit:contain;">',
+            feedback: "Your intentional confirmation habits strengthen the overall safety and retention of the encounter. " + suggestion
+        };
+    }
+
+    // Default (0 points or none of the specific ones above matched)
+    return {
+        title: "Swift Triage Sparrow",
+        icon: '<img src="./assets/1. Swift Triage Sparrow.png" style="width:260px; height:260px; object-fit:contain;">',
+        feedback: "You connected quickly and efficiently to start the interaction. For a more comprehensive pre-brief, try covering goals, jargon, risks, culture, and turn-taking rules."
+    };
 }
 
 function renderResults(container) {
