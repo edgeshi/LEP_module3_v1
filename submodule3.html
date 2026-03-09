@@ -4,36 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Section 2: Pre-Briefing with the Interpreter | Module 3</title>
+    <title>Section 3: Interpreter Interaction | Module 3</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .completion-banner {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app" style="max-width: 1200px;">
         <header>
+            <div id="navLeft"></div>
             <div>
                 <span class="role-label" style="color: var(--accent-color)">Module 3: Running a High-Quality Interpreted
                     Encounter</span>
-                <h1>Section 2: Pre-Briefing with the Interpreter</h1>
+                <h1>Section 3: Interaction (TESTING)</h1>
             </div>
             <div class="step-indicator" id="stepIndicator">
                 <div class="step-dot active"></div>
-                <div class="step-dot"></div>
-                <div class="step-dot"></div>
-                <div class="step-dot"></div>
             </div>
         </header>
 
-        <main id="mainContent" style="padding-right: 300px;">
-            <!-- Content will be injected by main.js -->
+        <main id="mainContent" style="padding-right: 320px;">
+            <div class="card" style="margin-bottom: 2rem;">
+                <h2 style="color: var(--primary-color); margin-top: 0;">Temporary Submodule 3 Testing Page</h2>
+                <p style="font-size: 1.1rem; line-height: 1.6; color: var(--secondary-color);">
+                    This page exists solely to unlock progress markers in localStorage so you can access the Download
+                    button.
+                </p>
+                <div
+                    style="background: #f8fafc; border: 1px dashed #cbd5e1; padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem;">
+                    <button class="btn" onclick="completeSubmodule3()">Unlock Submodule 4</button>
+                    <p id="successTxt" style="color: #16a34a; font-weight: bold; margin-top: 1rem; display: none;">
+                        Submodule 4 Unlocked! Go back to Hub.</p>
+                </div>
+            </div>
         </main>
 
-        <!-- Global Notes Panel -->
+        <!-- Global Notes Panel (Hidden inherently until unlocked) -->
         <div id="globalNotes" class="notes-panel collapsed"
-            style="position: fixed; top: 100px; right: 0; width: 280px; bottom: 40px; background: white; border-left: 2px dashed #cbd5e1; border-top: 2px dashed #cbd5e1; border-bottom: 2px dashed #cbd5e1; border-radius: 8px 0 0 8px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; box-shadow: -4px 0 15px rgba(0,0,0,0.05); z-index: 100;">
+            style="position: fixed; top: 100px; right: 0; width: 280px; bottom: 40px; background: white; border-left: 2px dashed #cbd5e1; border-top: 2px dashed #cbd5e1; border-bottom: 2px dashed #cbd5e1; border-radius: 8px 0 0 8px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; box-shadow: -4px 0 15px rgba(0,0,0,0.05); z-index: 100; display: none;">
 
             <!-- Fake tape -->
             <div
@@ -49,7 +70,8 @@
                     Expand</span>
             </div>
 
-            <div style="display: flex; flex: 1; overflow: hidden; padding: 1.5rem; gap: 1.5rem; overflow-x: visible;">
+            <div class="notes-content"
+                style="display: flex; flex: 1; overflow: hidden; padding: 1.5rem; gap: 1.5rem; overflow-x: visible;">
 
                 <!-- Empty State Placeholder -->
                 <div id="emptyNotesMessage"
@@ -57,9 +79,9 @@
                     Complete modules to unlock key takeaways and actionable instructions here!
                 </div>
 
-                <!-- Green Content (Always Visible) -->
+                <!-- Green Content -->
                 <div class="green-content"
-                    style="flex: 0 0 240px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: visible; padding-right: 10px;">
+                    style="flex: 0 0 240px; display: none; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: visible; padding-right: 10px;">
                     <div
                         style="background: rgba(34, 197, 94, 0.1); color: #15803d; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1.5rem; border: 1px solid rgba(34, 197, 94, 0.3);">
                         Always Bear in Mind
@@ -79,7 +101,7 @@
                         <div class="node-container rn-node"
                             style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); z-index: 2; text-align: center;">
                             <div class="node"
-                                style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;">
                                 <img src="./assets/nurse.png" style="width: 100%; height: 100%; object-fit: cover;"
                                     alt="RN">
                             </div>
@@ -90,7 +112,7 @@
                         <div class="node-container int-node"
                             style="position: absolute; bottom: 0; right: 8px; z-index: 2; text-align: center;">
                             <div class="node"
-                                style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;">
                                 <img src="./assets/interpreter.png"
                                     style="width: 100%; height: 100%; object-fit: cover;" alt="Interpreter">
                             </div>
@@ -102,7 +124,7 @@
                         <div class="node-container pat-node"
                             style="position: absolute; bottom: 0; left: 8px; z-index: 2; text-align: center;">
                             <div class="node"
-                                style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;">
                                 <img src="./assets/patient.png" style="width: 100%; height: 100%; object-fit: cover;"
                                     alt="Patient">
                             </div>
@@ -196,28 +218,40 @@
                             Personalized Feedback</span>
                         <p id="notesFeedback"
                             style="font-size: 0.95rem; color: #172554; margin: 0; font-style: italic;">
-                            "Try completing the challenges ahead to receive personalized feedback!"
+                            "Excellent identification of key terms! Keep in mind to also establish explicit
+                            turn-taking rules upfront to ensure a smooth flow."
                         </p>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <footer
-            style="margin-top: auto; padding-top: 2rem; display: flex; justify-content: space-between; padding-right: 320px;">
-            <div id="navLeft"></div>
-            <div id="navRight">
-                <button class="btn" id="nextBtn">Continue <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg></button>
-            </div>
-        </footer>
     </div>
+
+    <!-- Tooltip Templates -->
+    <div id="tooltip-rn" class="popup-tooltip">
+        <strong>RN (You):</strong> Directs the flow safely.<br>
+        • Speak directly to the patient<br>
+        • Use short sentences<br>
+        • Avoid jargon (e.g. "myocardial infarction")
+    </div>
+
+    <div id="tooltip-int" class="popup-tooltip">
+        <strong>Interpreter:</strong> Translates precisely.<br>
+        • Wait for cues to translate<br>
+        • Maintain culture context<br>
+        • Stay faithful to the original tone
+    </div>
+
+    <div id="tooltip-pat" class="popup-tooltip">
+        <strong>Patient:</strong> Heart of the interaction.<br>
+        • Look at the RN when answering<br>
+        • Share full symptoms<br>
+        • Ask questions via the interpreter
+    </div>
+
     <script src="./shared.js"></script>
-    <script src="./submodule2.js"></script>
+    <script src="./submodule3.js"></script>
 </body>
 
 </html>

@@ -47,89 +47,35 @@ const scriptHotspots = [
 function init() {
     renderStep();
     document.getElementById('nextBtn').addEventListener('click', nextStep);
-
-    const notesPanel = document.getElementById('globalNotes');
-    const notesHeader = document.getElementById('notesHeader');
-    const toggleIcon = document.getElementById('notesToggleIcon');
-    const orangeContent = notesPanel?.querySelector('.orange-content');
-
-    if (notesPanel && notesHeader && orangeContent) {
-        notesHeader.addEventListener('click', () => {
-            const isCollapsed = notesPanel.classList.contains('collapsed');
-            if (isCollapsed) {
-                notesPanel.classList.remove('collapsed');
-                notesPanel.style.width = '680px';
-                toggleIcon.innerText = '▶ Click to Collapse';
-                setTimeout(() => {
-                    orangeContent.style.opacity = '1';
-                    orangeContent.style.pointerEvents = 'auto';
-                }, 200);
-            } else {
-                notesPanel.classList.add('collapsed');
-                notesPanel.style.width = '280px';
-                toggleIcon.innerText = '◀ Click to Expand';
-                orangeContent.style.opacity = '0';
-                orangeContent.style.pointerEvents = 'none';
-            }
-        });
-    }
-
-    setupNodeTooltips();
+    // Notes initialization and DOM click handlers have been moved globally to shared.js
+    // so they can persist dynamically on index.html and submodule1.html without duplicate code.
 }
 
-function setupNodeTooltips() {
-    const nodeData = {
-        'rn-node': '<b>Nurse (RN):</b> Guides the session, sets goals, and manages clinical pacing.',
-        'int-node': '<b>Interpreter:</b> Translates concepts accurately and provides cultural context.',
-        'pat-node': '<b>Patient:</b> The focus of care; provides symptoms and asks questions.'
-    };
-
-    Object.keys(nodeData).forEach(cls => {
-        const nodeContainer = document.querySelector('.' + cls);
-        if (nodeContainer) {
-            const node = nodeContainer.querySelector('.node');
-            if (node) {
-                node.style.cursor = 'pointer';
-
-                // Create tooltip
-                const tooltip = document.createElement('div');
-                tooltip.className = 'popup-tooltip';
-                tooltip.innerHTML = nodeData[cls];
-                // Style adjustment for triangle nodes
-                tooltip.style.width = '200px';
-                nodeContainer.appendChild(tooltip);
-
-                node.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    // Close others
-                    document.querySelectorAll('.popup-tooltip').forEach(p => {
-                        if (p !== tooltip) p.classList.remove('active');
-                    });
-
-                    // Toggle current
-                    if (tooltip.classList.contains('active')) {
-                        tooltip.classList.remove('active');
-                    } else {
-                        tooltip.classList.add('active');
-                        // Position below node
-                        tooltip.style.top = '100%';
-                        tooltip.style.left = '50%';
-                        tooltip.style.transform = 'translateX(-50%) translateY(10px)';
-                    }
-                });
-            }
-        }
-    });
-
-    // Close when clicking outside
-    document.addEventListener('click', () => {
-        document.querySelectorAll('.popup-tooltip').forEach(p => p.classList.remove('active'));
-    });
-}
 
 function nextStep() {
     if (appState.currentStep < 3) {
         appState.currentStep++;
+
+        // Trigger generic Blue Notes unlock at Step 2 (Analysis phase)
+        if (appState.currentStep === 2) {
+            let notesData = localStorage.getItem('module3_notesUnlocked');
+            let unlocked = notesData ? JSON.parse(notesData) : [];
+            if (!unlocked.includes('blue')) {
+                unlocked.push('blue');
+                localStorage.setItem('module3_notesUnlocked', JSON.stringify(unlocked));
+
+                // Immediately show the new Blue widget in the sidebar and animate it open
+                if (typeof syncNotesState === 'function') syncNotesState();
+                if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation();
+            }
+        }
+
+        // Unlock Module 3 on Hub when finishing Submodule 2
+        if (appState.currentStep === 3) {
+            let curr = parseInt(localStorage.getItem('module3_unlockLevel') || '1');
+            if (curr < 3) localStorage.setItem('module3_unlockLevel', '3');
+        }
+
         renderStep();
     }
 }
@@ -282,46 +228,63 @@ function renderTriangle(container) {
                 <!-- Fake details like it's taped (optional but fun vibe factor) -->
                 <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg); width: 80px; height: 30px; background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 10; font-size: 0; pointer-events: none;">tape</div>
 
-                <div style="padding: 1rem; padding-top: 1.5rem; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-family: inherit; font-size: 1.1rem; color: #0f172a;">📝 Notes</span>
-                    <span id="notesToggleIcon" style="font-size: 0.8em; color: #64748b; font-weight: 600;">◀ Click to Expand</span>
+                <div style="padding: 1.2rem; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-weight: bold; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                    <span style="font-family: inherit; font-size: 1.1rem; color: #0f172a; white-space: nowrap;">📝 Module 3 Notes</span>
+                    <span id="notesToggleIcon" style="font-size: 0.8em; color: #64748b; font-weight: 600; white-space: nowrap;">◀ Click to Expand</span>
                 </div>
 
-                <div style="display: flex; flex: 1; overflow: hidden; padding: 1.5rem; gap: 1.5rem;">
+                <div style="display: flex; flex: 1; overflow: hidden; padding: 1.5rem; gap: 1.5rem; overflow-x: visible;">
                     
-                    <!-- Red Content (Always Visible) -->
-                    <div class="red-content" style="flex: 0 0 240px; display: flex; flex-direction: column; align-items: center;">
-                        <h4 style="color: #ef4444; margin-bottom: 2rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #ef4444; padding-bottom: 0.2rem;">Communication Triangle</h4>
+                    <!-- Green Content (Always Visible) -->
+                    <div class="green-content" style="flex: 0 0 240px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: visible; padding-right: 10px;">
+                        <div style="background: rgba(34, 197, 94, 0.1); color: #15803d; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1.5rem; border: 1px solid rgba(34, 197, 94, 0.3);">
+                            Always Bear in Mind
+                        </div>
+                        <h4 style="color: #16a34a; margin-bottom: 2rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #16a34a; padding-bottom: 0.2rem;">Communication Triangle</h4>
                         
-                        <div class="graphic-container" style="position: relative; width: 100%; height: 220px; transform: scale(0.9); transform-origin: top center;">
+                        <div class="graphic-container" style="position: relative; width: 100%; height: 260px; min-height: 260px; padding: 20px 0; margin-top: 10px; display: block; overflow: visible;">
                             <svg class="triangle-svg" viewBox="0 0 300 260" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
-                                <path d="M150 20 L280 230 L20 230 Z" fill="none" stroke="#ef4444" stroke-width="3" stroke-dasharray="6,4" />
+                                <path d="M150 20 L255 230 L45 230 Z" fill="none" stroke="#16a34a" stroke-width="3" stroke-dasharray="6,4" />
                             </svg>
                             
                             <div class="node-container rn-node" style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); z-index: 2; text-align: center;">
-                                <div class="node" style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #ef4444; display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="./assets/nurse.png" style="width: 100%; height: 100%; object-fit: cover;" alt="RN"></div>
-                                <div class="node-text" style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #ef4444;">RN</div>
+                                <div class="node" style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="./assets/nurse.png" style="width: 100%; height: 100%; object-fit: cover;" alt="RN"></div>
+                                <div class="node-text" style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #16a34a;">RN</div>
                             </div>
                             
-                            <div class="node-container int-node" style="position: absolute; bottom: 0; right: -10px; z-index: 2; text-align: center;">
-                                <div class="node" style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #ef4444; display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="./assets/interpreter.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Interpreter"></div>
-                                <div class="node-text" style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #ef4444;">Interpreter</div>
+                            <div class="node-container int-node" style="position: absolute; bottom: 0; right: 8px; z-index: 2; text-align: center;">
+                                <div class="node" style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="./assets/interpreter.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Interpreter"></div>
+                                <div class="node-text" style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #16a34a;">Interpreter</div>
                             </div>
                             
-                            <div class="node-container pat-node" style="position: absolute; bottom: 0; left: -10px; z-index: 2; text-align: center;">
-                                <div class="node" style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #ef4444; display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="./assets/patient.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Patient"></div>
-                                <div class="node-text" style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #ef4444;">Patient</div>
+                            <div class="node-container pat-node" style="position: absolute; bottom: 0; left: 8px; z-index: 2; text-align: center;">
+                                <div class="node" style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="./assets/patient.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Patient"></div>
+                                <div class="node-text" style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #16a34a;">Patient</div>
                             </div>
                         </div>
+                        </div>
                     </div>
+                    
+                    <div style="margin-top: 1.5rem; width: 100%; text-align: left;">
+                        <h5 style="color: #16a34a; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px dotted #16a34a; padding-bottom: 0.2rem;">Interpreting Methods</h5>
+                        <ul style="padding-left: 1.2rem; font-size: 0.85rem; line-height: 1.4; color: #166534; margin-top: 0.5rem;">
+                            <li style="margin-bottom: 0.3rem;">Turn-taking with the interpreter</li>
+                            <li>Looking at the patient</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Blue Content (Hidden when collapsed) -->
+                    <div class="blue-content" style="flex: 1; opacity: 0; transition: opacity 0.3s; color: #1e3a8a; display: flex; flex-direction: column; justify-content: flex-start; border-left: 1px solid #dbeafe; padding-left: 1.5rem; min-width: 320px; overflow-y: auto; padding-right: 10px;">
+                        
+                        <div style="align-self: flex-start; background: rgba(30, 58, 138, 0.1); color: #1e40af; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1.5rem; border: 1px solid rgba(30, 58, 138, 0.3);">
+                            Only Follow at Actions
+                        </div>
 
-                    <!-- Orange Content (Hidden when collapsed) -->
-                    <div class="orange-content" style="flex: 1; opacity: 0; transition: opacity 0.3s; color: #f97316; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid #ffedd5; padding-left: 1.5rem; min-width: 320px;">
-                        <h4 style="margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 2px solid #ffedd5; padding-bottom: 0.6rem;">Pre-Briefing Knowledge</h4>
-                        <p style="font-size: 1rem; line-height: 1.5; font-weight: 500; margin-bottom: 1rem;">
+                        <h4 style="margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.6rem;">Pre-briefing</h4>
+                        <p style="font-size: 1rem; line-height: 1.5; font-weight: 500; margin-bottom: 1rem; color: #1e3a8a;">
                             A successful pre-briefing with interpreters should cover:
                         </p>
-                        <ul style="margin-top: 0; padding-left: 1.4rem; font-size: 0.95rem; line-height: 1.6; font-weight: 500; color: #ea580c;">
+                        <ul style="margin-top: 0; padding-left: 1.4rem; font-size: 0.95rem; line-height: 1.6; font-weight: 500; color: #1e3a8a;">
                             <li style="margin-bottom: 0.5rem;"><strong>Goal:</strong> The primary purpose of the interaction.</li>
                             <li style="margin-bottom: 0.5rem;"><strong>Jargon info:</strong> Expected medical terms to clarify.</li>
                             <li style="margin-bottom: 0.5rem;"><strong>Patient risk:</strong> Mental state and health literacy.</li>
@@ -329,9 +292,9 @@ function renderTriangle(container) {
                             <li><strong>Turn-taking rule:</strong> Short, one-sentence pacing.</li>
                         </ul>
 
-                        <div style="margin-top: 1.5rem; background: #fff7ed; padding: 1.2rem; border-radius: 8px; border: 1px solid #fed7aa; position: relative;">
-                            <span style="position: absolute; top: -10px; left: 15px; background: #fff7ed; padding: 0 8px; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #ea580c; border: 1px solid #fed7aa; border-radius: 10px;">AI Personalized Feedback</span>
-                            <p style="font-size: 0.95rem; color: #c2410c; margin: 0; font-style: italic;">
+                        <div style="margin-top: 1.5rem; background: #eff6ff; padding: 1.2rem; border-radius: 8px; border: 1px solid #bfdbfe; position: relative;">
+                            <span style="position: absolute; top: -10px; left: 15px; background: #eff6ff; padding: 0 8px; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #1e3a8a; border: 1px solid #bfdbfe; border-radius: 10px;">AI Personalized Feedback</span>
+                            <p style="font-size: 0.95rem; color: #172554; margin: 0; font-style: italic;">
                                 "Excellent identification of key terms! Keep in mind to also establish explicit turn-taking rules upfront to ensure a smooth flow."
                             </p>
                         </div>
