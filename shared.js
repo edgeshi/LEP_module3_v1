@@ -166,6 +166,13 @@ function syncNotesState() {
         blueContent.style.display = unlocked.includes('blue') ? 'flex' : 'none';
     }
 
+    // Check for Step 3 Patient Notes specific unlock
+    const patNotes = document.getElementById('sec3PatientNotes');
+    if (patNotes && localStorage.getItem('module3_patient_notes_unlocked') === 'true') {
+        patNotes.style.display = 'block';
+        patNotes.style.opacity = '1';
+    }
+
     // Add Download Button if all 4 submodules are complete (unlockLevel >= 5)
     let unlockLevel = parseInt(localStorage.getItem('module3_unlockLevel') || '1');
     if (unlockLevel >= 5) {

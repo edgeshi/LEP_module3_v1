@@ -134,6 +134,9 @@ function renderStep() {
             renderSection3DragActivity(main);
             const patNotes = document.getElementById('sec3PatientNotes');
             if (patNotes) {
+                // Permanently memorize this section is unlocked globally
+                localStorage.setItem('module3_patient_notes_unlocked', 'true');
+
                 patNotes.style.display = 'block';
                 setTimeout(() => {
                     patNotes.style.opacity = '1';
