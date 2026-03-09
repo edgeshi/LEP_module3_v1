@@ -161,6 +161,7 @@ function renderStep() {
             if (notesPanel && notesPanel.classList.contains('collapsed')) {
                 notesPanel.querySelector('#notesHeader').click();
             }
+            if (typeof showNotesUpdatedToast === 'function') showNotesUpdatedToast();
             break;
         case 7:
             renderSection3Results(main);
@@ -603,6 +604,14 @@ function renderResults(container) {
         feedbackEl.innerText = `"${badge.feedback}"`;
     }
 
+    // Automatically open Notes Panel to draw attention to new AI suggestions
+    const notesPanel = document.getElementById('globalNotes');
+    if (notesPanel && notesPanel.classList.contains('collapsed')) {
+        const header = notesPanel.querySelector('#notesHeader');
+        if (header) header.click();
+    }
+    if (typeof showNotesUpdatedToast === 'function') showNotesUpdatedToast();
+
     container.innerHTML = `
         <div class="subtitle">Step 4: AI Evaluation</div>
         
@@ -847,14 +856,13 @@ function renderSection3Results(container) {
     // Unlocking the Suggestion globally in the Notes Panel
     localStorage.setItem('module3_sec3_suggestion_unlocked', 'true');
     localStorage.setItem('module3_sec3_suggestion', suggestion);
-    if (typeof syncNotesState === 'function') syncNotesState();
-
     // Automatically open Notes Panel to draw attention
     const notesPanel = document.getElementById('globalNotes');
     if (notesPanel && notesPanel.classList.contains('collapsed')) {
         const header = notesPanel.querySelector('#notesHeader');
         if (header) header.click();
     }
+    if (typeof showNotesUpdatedToast === 'function') showNotesUpdatedToast();
 
     container.innerHTML = `
         <div class="subtitle">Step 4: AI Evaluation</div>

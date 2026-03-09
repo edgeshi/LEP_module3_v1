@@ -227,6 +227,7 @@ function triggerNotesUpdateAnimation() {
             if (toggleIcon) toggleIcon.innerText = '▶ Click to Collapse';
 
             showNotesToast();
+            if (typeof showNotesUpdatedToast === 'function') showNotesUpdatedToast();
 
             if (blueContent) {
                 setTimeout(() => {
@@ -334,6 +335,32 @@ function showNotesToast() {
     toast.hideTimeout = setTimeout(() => {
         toast.classList.remove('show');
     }, 4500); // Display for 4.5 seconds
+}
+
+// Quick "Notes Updated!" Toast Popup logic
+function showNotesUpdatedToast() {
+    let toast = document.getElementById('notesUpdatedToast');
+    const notesPanel = document.getElementById('globalNotes');
+
+    if (!notesPanel) return;
+
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'notesUpdatedToast';
+        toast.className = 'notes-updated-toast';
+        toast.innerHTML = '✨ Notes Updated! ✨';
+        notesPanel.appendChild(toast);
+    }
+
+    toast.classList.add('show');
+
+    if (toast.hideTimeout) {
+        clearTimeout(toast.hideTimeout);
+    }
+
+    toast.hideTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3500);
 }
 
 // Compiles and downloads all visible notes into a visually perfect .doc file
