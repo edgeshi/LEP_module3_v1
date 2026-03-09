@@ -844,6 +844,11 @@ function renderSection3Results(container) {
         scoreText = `<span style="color: var(--danger)">${errors} Errors</span>`;
     }
 
+    // Unlocking the Suggestion globally in the Notes Panel
+    localStorage.setItem('module3_sec3_suggestion_unlocked', 'true');
+    localStorage.setItem('module3_sec3_suggestion', suggestion);
+    if (typeof syncNotesState === 'function') syncNotesState();
+
     container.innerHTML = `
         <div class="subtitle">Step 4: AI Evaluation</div>
         

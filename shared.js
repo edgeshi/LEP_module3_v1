@@ -434,7 +434,6 @@ function executeDocumentDownload(btn, originalText) {
     cloneWrapper.querySelectorAll('.add-note-btn').forEach(b => b.remove());
     cloneWrapper.querySelectorAll('svg').forEach(b => b.remove());
     cloneWrapper.querySelectorAll('.node-container').forEach(b => b.remove());
-    cloneWrapper.querySelectorAll('span[style*="position: absolute"]').forEach(b => b.remove());
 
     const emptyMsg = cloneWrapper.querySelector('#emptyNotesMessage');
     if (emptyMsg) emptyMsg.remove();
