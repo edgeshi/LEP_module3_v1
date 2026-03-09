@@ -171,6 +171,16 @@ function syncNotesState() {
     if (patNotes && localStorage.getItem('module3_patient_notes_unlocked') === 'true') {
         patNotes.style.display = 'block';
         patNotes.style.opacity = '1';
+
+        // Check for Step 4 AI Suggestion string
+        const suggestionBox = document.getElementById('sec3PatientNotesSuggestion');
+        const suggestionText = document.getElementById('sec3PatientNotesFeedbackText');
+        const savedSuggestion = localStorage.getItem('module3_sec3_suggestion');
+
+        if (suggestionBox && suggestionText && localStorage.getItem('module3_sec3_suggestion_unlocked') === 'true') {
+            suggestionText.innerText = `"${savedSuggestion}"`;
+            suggestionBox.style.display = 'block';
+        }
     }
 
     // Add Download Button if all 4 submodules are complete (unlockLevel >= 5)
