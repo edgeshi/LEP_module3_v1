@@ -93,19 +93,21 @@ function renderSection4ContentDelivery(container) {
     container.innerHTML = `
         <div class="subtitle">Step 1: Content Delivery</div>
         
-        <div class="glass-card" style="padding: 2.5rem; border-radius: var(--radius-lg); margin-top: 1.5rem; position: relative;">
+        <div class="glass-card" style="padding: 2.5rem; padding-left: clamp(1.5rem, 5vw, 2.5rem); border-radius: var(--radius-lg); margin-top: 160px; position: relative;">
             
             <!-- Characters -->
-            <img src="./assets/patient.png" alt="Patient" style="position: absolute; top: -112px; left: 100px; width: 225px; z-index: 10;">
-            <img src="./assets/interpreter.png" alt="Interpreter" style="position: absolute; top: -165px; right: 120px; width: 210px; z-index: 10;">
-            <img src="./assets/nurse_back.png" alt="Nurse Back" style="position: absolute; top: 0px; left: -130px; width: 330px; z-index: 10;">
+            <img src="./assets/patient.png" alt="Patient" style="position: absolute; bottom: calc(100% - 15px); left: clamp(10px, 8%, 100px); width: clamp(110px, 18vw, 190px); z-index: 10;">
+            <img src="./assets/interpreter.png" alt="Interpreter" style="position: absolute; bottom: calc(100% - 15px); right: clamp(10px, 8%, 120px); width: clamp(100px, 16vw, 170px); z-index: 10;">
+            <img src="./assets/nurse_back.png" alt="Nurse Back" style="position: absolute; top: clamp(0px, 2vw, 20px); left: clamp(-60px, -5vw, -20px); width: clamp(140px, 22vw, 260px); z-index: 10;">
             
-            <p style="font-size: 1.15rem; color: #475569; margin-bottom: 2rem; font-weight: 500; padding-top: 2rem;">
-                You are caring for Mr. Huang after IV antibiotic teaching. The interpreter is connected via video.
-            </p>
-            <h3 style="color: #1e3a8a; margin-bottom: 2rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.8rem;">
-                <span style="color: var(--danger); margin-right: 0.5rem;">&#x25CF;</span> "To communicate effectively: "
-            </h3>
+            <div style="padding-left: clamp(70px, 20vw, 200px);">
+                <p style="font-size: 1.15rem; color: #475569; margin-bottom: 2rem; font-weight: 500; padding-top: 1rem;">
+                    You are caring for Mr. Huang after IV antibiotic teaching. The interpreter is connected via video.
+                </p>
+                <h3 style="color: #1e3a8a; margin-bottom: 2rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.8rem;">
+                    <span style="color: var(--danger); margin-right: 0.5rem;">&#x25CF;</span> "To communicate effectively: "
+                </h3>
+            </div>
             
             <!-- Decision Point 1 -->
             <div style="margin-bottom: 3rem;">
