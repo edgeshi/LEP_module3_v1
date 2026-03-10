@@ -96,9 +96,9 @@ function renderSection4ContentDelivery(container) {
         <div class="glass-card" style="padding: 2.5rem; border-radius: var(--radius-lg); margin-top: 1.5rem; position: relative;">
             
             <!-- Characters -->
-            <img src="./assets/patient.png" alt="Patient" style="position: absolute; top: -60px; left: 60px; width: 180px; z-index: 10;">
-            <img src="./assets/interpreter.png" alt="Interpreter" style="position: absolute; top: -110px; right: 50px; width: 220px; z-index: 10;">
-            <img src="./assets/nurse_back.png" alt="Nurse Back" style="position: absolute; top: 100px; left: -140px; width: 330px; z-index: 10;">
+            <img src="./assets/patient.png" alt="Patient" style="position: absolute; top: -112px; left: 100px; width: 225px; z-index: 10;">
+            <img src="./assets/interpreter.png" alt="Interpreter" style="position: absolute; top: -165px; right: 120px; width: 210px; z-index: 10;">
+            <img src="./assets/nurse_back.png" alt="Nurse Back" style="position: absolute; top: 0px; left: -130px; width: 330px; z-index: 10;">
             
             <p style="font-size: 1.15rem; color: #475569; margin-bottom: 2rem; font-weight: 500; padding-top: 2rem;">
                 You are caring for Mr. Huang after IV antibiotic teaching. The interpreter is connected via video.
