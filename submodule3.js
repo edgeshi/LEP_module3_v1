@@ -3,7 +3,9 @@ const appState = {
     section5Active: false,
     quizSelection: {
         dp1: null,
-        dp2: null
+        dp2: null,
+        dp3: null,
+        dp4: null
     }
 };
 
@@ -66,7 +68,7 @@ function renderStep() {
             renderSection4ContentDelivery(main);
             break;
         case 1:
-            renderPlaceholder(main, "Step 2: Analysis", "Analyze the components of the interaction.", "1 min");
+            renderSection4Step2(main);
             break;
         case 2:
             renderPlaceholder(main, "Step 3: Learner Activity", "Practice identifying and using plain language.", "2 min");
@@ -216,6 +218,148 @@ function renderSection4ContentDelivery(container) {
 
     // Setup hover effects
     [dp1A, dp1B, dp2A, dp2B].forEach(el => {
+        el.addEventListener('mouseenter', function () {
+            if (this.style.backgroundColor === '' || this.style.backgroundColor === 'white') {
+                this.style.borderColor = 'var(--primary-color)';
+                this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
+            }
+        });
+        el.addEventListener('mouseleave', function () {
+            if (this.style.backgroundColor === '' || this.style.backgroundColor === 'white') {
+                this.style.borderColor = '#e2e8f0';
+                this.style.boxShadow = 'none';
+            }
+        });
+    });
+}
+
+function renderSection4Step2(container) {
+    container.innerHTML = `
+        <div class="subtitle">Step 2: Analysis</div>
+        
+        <div class="glass-card" style="padding: 2.5rem; padding-left: clamp(1.5rem, 5vw, 2.5rem); border-radius: var(--radius-lg); margin-top: 160px; position: relative;">
+            
+            <!-- Characters -->
+            <img src="./assets/patient.png" alt="Patient" style="position: absolute; bottom: calc(100% - 15px); left: clamp(10px, 8%, 100px); width: clamp(110px, 18vw, 190px); z-index: 10;">
+            <img src="./assets/interpreter.png" alt="Interpreter" style="position: absolute; bottom: calc(100% - 15px); right: clamp(10px, 8%, 120px); width: clamp(100px, 16vw, 170px); z-index: 10;">
+            <img src="./assets/nurse_back.png" alt="Nurse Back" style="position: absolute; top: clamp(0px, 2vw, 20px); left: clamp(-60px, -5vw, -20px); width: clamp(140px, 22vw, 260px); z-index: 10;">
+            
+            <div style="padding-left: clamp(70px, 20vw, 200px);">
+                <p style="font-size: 1.15rem; color: #475569; margin-bottom: 2rem; font-weight: 500; padding-top: 1rem;">
+                    You are caring for Mr. Huang after IV antibiotic teaching. The interpreter is connected via video.
+                </p>
+                <h3 style="color: #1e3a8a; margin-bottom: 2rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.8rem;">
+                    <span style="color: var(--danger); margin-right: 0.5rem;">&#x25CF;</span> "To check the communication results: "
+                </h3>
+            </div>
+            
+            <!-- Decision Point 3 -->
+            <div style="margin-bottom: 3rem;">
+                <h4 style="font-size: 1.15rem; color: #334155; margin-bottom: 1.2rem;">
+                    Decision Point 3 (<span style="color: var(--danger);">Teach-Back vs. Yes/No</span>)
+                </h4>
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-left: 1.5rem;">
+                    <div class="quiz-option" id="dp3-optA" style="padding: 1rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: white;">
+                        <span style="font-weight: 600; margin-right: 0.5rem;">A.</span> "Do you understand?"
+                    </div>
+                    
+                    <div id="dp3-feedbackA" style="display: none; padding: 1rem 1.5rem; background: #fef2f2; border-left: 4px solid var(--danger); color: #991b1b; margin-left: 2rem; border-radius: 4px; font-weight: 500;">
+                        Teach-back is essential (Taira et al.).
+                    </div>
+
+                    <div class="quiz-option" id="dp3-optB" style="padding: 1rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: white;">
+                        <span style="font-weight: 600; margin-right: 0.5rem;">B.</span> "Can you show me how you'll take this medicine at home?"
+                    </div>
+                    
+                    <div id="dp3-feedbackB" style="display: none; padding: 1rem 1.5rem; background: #f0fdf4; border-left: 4px solid var(--success); color: #166534; margin-left: 2rem; border-radius: 4px; font-weight: 600;">
+                        Correct! Teach-back is essential to verify understanding.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decision Point 4 -->
+            <div>
+                <h4 style="font-size: 1.15rem; color: #334155; margin-bottom: 1.2rem;">
+                    Decision Point 4 (<span style="color: var(--danger);">Question vs. No Question for Interpreter</span>)
+                </h4>
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-left: 1.5rem;">
+                    <div class="quiz-option" id="dp4-optA" style="padding: 1rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: white;">
+                        <span style="font-weight: 600; margin-right: 0.5rem;">A.</span> "[Nurses can never talk directly to the interpreter during the session.]"
+                    </div>
+                    
+                    <div id="dp4-feedbackA" style="display: none; padding: 1rem 1.5rem; background: #fef2f2; border-left: 4px solid var(--danger); color: #991b1b; margin-left: 2rem; border-radius: 4px; font-weight: 500;">
+                        Sometimes you can ask the interpreter directly to make sure the communication results are delivered accurately (interview transcript).
+                    </div>
+
+                    <div class="quiz-option" id="dp4-optB" style="padding: 1rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: white;">
+                        <span style="font-weight: 600; margin-right: 0.5rem;">B.</span> "Hi Mary (the interpreter), I've noticed you constantly hesitate on XXX. Do you need more clarification? Or is there any cultural concern?"
+                    </div>
+                    
+                    <div id="dp4-feedbackB" style="display: none; padding: 1rem 1.5rem; background: #f0fdf4; border-left: 4px solid var(--success); color: #166534; margin-left: 2rem; border-radius: 4px; font-weight: 600;">
+                        Correct!
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    `;
+
+    // Add interactivity logic for DP3
+    const dp3A = container.querySelector('#dp3-optA');
+    const dp3B = container.querySelector('#dp3-optB');
+    const fb3A = container.querySelector('#dp3-feedbackA');
+    const fb3B = container.querySelector('#dp3-feedbackB');
+
+    dp3A.addEventListener('click', () => {
+        dp3A.style.borderColor = 'var(--danger)';
+        dp3A.style.backgroundColor = '#fef2f2';
+        dp3B.style.borderColor = '#e2e8f0';
+        dp3B.style.backgroundColor = 'white';
+        fb3A.style.display = 'block';
+        fb3B.style.display = 'none';
+        appState.quizSelection.dp3 = 'A';
+    });
+
+    dp3B.addEventListener('click', () => {
+        dp3B.style.borderColor = 'var(--success)';
+        dp3B.style.backgroundColor = '#f0fdf4';
+        dp3A.style.borderColor = '#e2e8f0';
+        dp3A.style.backgroundColor = 'white';
+        fb3B.style.display = 'block';
+        fb3A.style.display = 'none';
+        appState.quizSelection.dp3 = 'B';
+    });
+
+    // Add interactivity logic for DP4
+    const dp4A = container.querySelector('#dp4-optA');
+    const dp4B = container.querySelector('#dp4-optB');
+    const fb4A = container.querySelector('#dp4-feedbackA');
+    const fb4B = container.querySelector('#dp4-feedbackB');
+
+    dp4A.addEventListener('click', () => {
+        dp4A.style.borderColor = 'var(--danger)';
+        dp4A.style.backgroundColor = '#fef2f2';
+        dp4B.style.borderColor = '#e2e8f0';
+        dp4B.style.backgroundColor = 'white';
+        fb4A.style.display = 'block';
+        fb4B.style.display = 'none';
+        appState.quizSelection.dp4 = 'A';
+    });
+
+    dp4B.addEventListener('click', () => {
+        dp4B.style.borderColor = 'var(--success)';
+        dp4B.style.backgroundColor = '#f0fdf4';
+        dp4A.style.borderColor = '#e2e8f0';
+        dp4A.style.backgroundColor = 'white';
+        fb4B.style.display = 'block';
+        fb4A.style.display = 'none';
+        appState.quizSelection.dp4 = 'B';
+    });
+
+    // Setup hover effects
+    [dp3A, dp3B, dp4A, dp4B].forEach(el => {
         el.addEventListener('mouseenter', function () {
             if (this.style.backgroundColor === '' || this.style.backgroundColor === 'white') {
                 this.style.borderColor = 'var(--primary-color)';
