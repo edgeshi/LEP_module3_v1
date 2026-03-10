@@ -132,9 +132,43 @@
                         style="align-self: flex-start; background: rgba(30, 58, 138, 0.1); color: #1e40af; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1.5rem; border: 1px solid rgba(30, 58, 138, 0.3);">
                         Only Follow at Actions
                     </div>
+                    <div id="note-sec1-step1" style="display: none; margin-bottom: 1.5rem; opacity: 0; transition: opacity 0.5s ease-in;">
+                        <h4 style="color: #1e3a8a; margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.6rem;">
+                            Planning a Session
+                        </h4>
+                        <div class="hover-note-line" style="margin-bottom: 0.2rem;">
+                            <p style="color: #1e3a8a; font-size: 1rem; line-height: 1.5; font-weight: 500; margin: 0;">
+                                A successful planning of an interpreted session should cover:
+                            </p>
+                            <button class="add-note-btn" title="Add note">+</button>
+                            <textarea class="inline-user-note hidden" id="userNotePlan-1" placeholder="Add personal note..."></textarea>
+                        </div>
+
+                        <ul style="margin-top: 0.5rem; padding-left: 1.4rem; font-size: 0.95rem; line-height: 1.6; font-weight: 500; color: #1e3a8a;">
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Session Context:</strong> Reason for the visit and medical history.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNotePlan-2" placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Logistics:</strong> Modality (in-person, video, phone) and room setup.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNotePlan-3" placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Roles & Expectations:</strong> Clarifying how the encounter will be patterned.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNotePlan-4" placeholder="Add personal note..."></textarea>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="note-sec2-step3" style="display: none; opacity: 0; transition: opacity 0.5s ease-in;">
+
 
                     <h4
                         style="color: #1e3a8a; margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.6rem;">
+                        Pre-briefing</h4>
                         <div class="hover-note-line" style="margin-bottom: 0.2rem;">
                             <p style="color: #1e3a8a; font-size: 1rem; line-height: 1.5; font-weight: 500; margin: 0;">
                                 A successful pre-briefing with interpreters should cover:
@@ -178,6 +212,8 @@
                                     placeholder="Add personal note..."></textarea>
                             </li>
                         </ul>
+
+                                                </div>
 
                         <div
                             style="margin-top: 1.5rem; background: #eff6ff; padding: 1.2rem; border-radius: 8px; border: 1px solid #bfdbfe; position: relative;">
