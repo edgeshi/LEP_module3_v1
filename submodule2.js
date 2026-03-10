@@ -58,18 +58,26 @@ function nextStep() {
     if (appState.currentStep < 7) {
         appState.currentStep++;
 
-        // Trigger generic Blue Notes unlock at Step 2 (Analysis phase)
-        if (appState.currentStep === 2) {
+        // Trigger Pre-briefing Notes unlock at Step 3 (Learner Activity phase)
+        if (appState.currentStep === 3) {
+            localStorage.setItem('module3_note_sec2_step3', 'true');
+
             let notesData = localStorage.getItem('module3_notesUnlocked');
             let unlocked = notesData ? JSON.parse(notesData) : [];
             if (!unlocked.includes('blue')) {
                 unlocked.push('blue');
                 localStorage.setItem('module3_notesUnlocked', JSON.stringify(unlocked));
-
-                // Immediately show the new Blue widget in the sidebar and animate it open
-                if (typeof syncNotesState === 'function') syncNotesState();
-                if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation();
             }
+
+            if (typeof syncNotesState === 'function') syncNotesState();
+            if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation('note-sec2-step3');
+        }
+
+        // Trigger AI Evaluation Note unlock cross-over at Step 4
+        if (appState.currentStep === 4) {
+            localStorage.setItem('module3_note_ai_sec2', 'true');
+            if (typeof syncNotesState === 'function') syncNotesState();
+            if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation('note-ai-sec2');
         }
 
         // Unlock Module 3 on Hub when finishing Submodule 2 (End of Section 3, Step 7)
@@ -157,11 +165,8 @@ function renderStep() {
                 }, 50);
             }
             // Automatically open Notes Panel to draw attention
-            const notesPanel = document.getElementById('globalNotes');
-            if (notesPanel && notesPanel.classList.contains('collapsed')) {
-                notesPanel.querySelector('#notesHeader').click();
-            }
-            if (typeof showNotesUpdatedToast === 'function') showNotesUpdatedToast();
+            if (typeof syncNotesState === 'function') syncNotesState();
+            if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation('sec3PatientNotes');
             break;
         case 7:
             renderSection3Results(main);
@@ -604,13 +609,9 @@ function renderResults(container) {
         feedbackEl.innerText = `"${badge.feedback}"`;
     }
 
-    // Automatically open Notes Panel to draw attention to new AI suggestions
-    const notesPanel = document.getElementById('globalNotes');
-    if (notesPanel && notesPanel.classList.contains('collapsed')) {
-        const header = notesPanel.querySelector('#notesHeader');
-        if (header) header.click();
-    }
-    if (typeof showNotesUpdatedToast === 'function') showNotesUpdatedToast();
+    // Highlight the AI suggestion when unlocking
+    if (typeof syncNotesState === 'function') syncNotesState();
+    if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation('note-ai-sec2');
 
     container.innerHTML = `
         <div class="subtitle">Step 4: AI Evaluation</div>
@@ -856,13 +857,9 @@ function renderSection3Results(container) {
     // Unlocking the Suggestion globally in the Notes Panel
     localStorage.setItem('module3_sec3_suggestion_unlocked', 'true');
     localStorage.setItem('module3_sec3_suggestion', suggestion);
-    // Automatically open Notes Panel to draw attention
-    const notesPanel = document.getElementById('globalNotes');
-    if (notesPanel && notesPanel.classList.contains('collapsed')) {
-        const header = notesPanel.querySelector('#notesHeader');
-        if (header) header.click();
-    }
-    if (typeof showNotesUpdatedToast === 'function') showNotesUpdatedToast();
+    // Synchronize to reveal suggestion and trigger target glow
+    if (typeof syncNotesState === 'function') syncNotesState();
+    if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation('sec3PatientNotesSuggestion');
 
     container.innerHTML = `
         <div class="subtitle">Step 4: AI Evaluation</div>

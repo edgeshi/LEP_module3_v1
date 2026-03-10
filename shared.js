@@ -135,53 +135,119 @@ function setupNodeTooltips() {
     });
 }
 
+// Update Notes Panel UI when data changes
 function syncNotesState() {
-    const notesPanel = document.getElementById('globalNotes');
-    if (!notesPanel) return;
+    let globalNotes = document.getElementById('globalNotes');
+    if (!globalNotes) return;
 
-    // Read the unlocked features array from localStorage
-    const unlockedJson = localStorage.getItem('module3_notesUnlocked');
-    let unlocked = [];
-    if (unlockedJson) {
-        try { unlocked = JSON.parse(unlockedJson); } catch (e) { }
-    }
+    let emptyMessage = globalNotes.querySelector('#emptyNotesMessage');
+    let greenContent = globalNotes.querySelector('.green-content');
+    let blueContent = globalNotes.querySelector('.blue-content');
 
-    // Always keep the panel visible
-    notesPanel.style.display = 'flex';
+    // Individual note section elements
+    const noteSec0Step2 = document.getElementById('note-sec0-step2');
+    const noteSec0Step4 = document.getElementById('note-sec0-step4');
+    const noteSec1Step1 = document.getElementById('note-sec1-step1');
+    const noteSec2Step3 = document.getElementById('note-sec2-step3');
+    const noteAiSec2 = document.getElementById('note-ai-sec2');
+    const sec3PatientNotes = document.getElementById('sec3PatientNotes');
+    const sec3PatientNotesSuggestion = document.getElementById('sec3PatientNotesSuggestion');
 
-    // Manage an empty state placeholder
-    const emptyMessage = notesPanel.querySelector('#emptyNotesMessage');
-    if (emptyMessage) {
-        emptyMessage.style.display = unlocked.length === 0 ? 'block' : 'none';
-    }
+    // Default to hiding them all initially
+    if (noteSec0Step2) noteSec0Step2.style.display = 'none';
+    if (noteSec0Step4) noteSec0Step4.style.display = 'none';
+    if (noteSec1Step1) noteSec1Step1.style.display = 'none';
+    if (noteSec2Step3) noteSec2Step3.style.display = 'none';
+    if (noteAiSec2) noteAiSec2.style.display = 'none';
+    if (sec3PatientNotes) sec3PatientNotes.style.display = 'none';
+    if (sec3PatientNotesSuggestion) sec3PatientNotesSuggestion.style.display = 'none';
 
-    // Toggle specific color columns
-    const greenContent = notesPanel.querySelector('.green-content');
-    if (greenContent) {
-        greenContent.style.display = unlocked.includes('green') ? 'flex' : 'none';
-    }
+    // Global old flags (fallback or base column logic)
+    let notesData = localStorage.getItem('module3_notesUnlocked');
+    let unlocked = notesData ? JSON.parse(notesData) : [];
 
-    const blueContent = notesPanel.querySelector('.blue-content');
-    if (blueContent) {
-        blueContent.style.display = unlocked.includes('blue') ? 'flex' : 'none';
-    }
+    // Specific step checks
+    const hasSec0Step2 = localStorage.getItem('module3_note_sec0_step2') === 'true';
+    const hasSec0Step4 = localStorage.getItem('module3_note_sec0_step4') === 'true';
+    const hasSec1Step1 = localStorage.getItem('module3_note_sec1_step1') === 'true';
 
-    // Check for Step 3 Patient Notes specific unlock
-    const patNotes = document.getElementById('sec3PatientNotes');
-    if (patNotes && localStorage.getItem('module3_patient_notes_unlocked') === 'true') {
-        patNotes.style.display = 'block';
-        patNotes.style.opacity = '1';
+    const hasSec2Step3 = localStorage.getItem('module3_note_sec2_step3') === 'true';
+    const hasAiSec2 = localStorage.getItem('module3_note_ai_sec2') === 'true';
+    const hasSec3Patient = localStorage.getItem('module3_patient_notes_unlocked') === 'true';
+    const hasSec3Suggestion = localStorage.getItem('module3_sec3_suggestion_unlocked') === 'true';
 
-        // Check for Step 4 AI Suggestion string
-        const suggestionBox = document.getElementById('sec3PatientNotesSuggestion');
-        const suggestionText = document.getElementById('sec3PatientNotesFeedbackText');
-        const savedSuggestion = localStorage.getItem('module3_sec3_suggestion');
+    // Check if ANY content is available for the columns
+    const showGreen = unlocked.includes('green') || hasSec0Step2 || hasSec0Step4;
+    const showBlue = unlocked.includes('blue') || hasSec1Step1 || hasSec2Step3 || hasAiSec2 || hasSec3Patient || hasSec3Suggestion;
 
-        if (suggestionBox && suggestionText && localStorage.getItem('module3_sec3_suggestion_unlocked') === 'true') {
-            suggestionText.innerText = `"${savedSuggestion}"`;
-            suggestionBox.style.display = 'block';
+    if (!showGreen && !showBlue) {
+        if (emptyMessage) emptyMessage.style.display = 'block';
+        if (greenContent) {
+            greenContent.style.opacity = '0';
+            setTimeout(() => { greenContent.style.display = 'none'; }, 300);
+        }
+        if (blueContent) {
+            blueContent.style.opacity = '0';
+            setTimeout(() => { blueContent.style.display = 'none'; }, 300);
+        }
+    } else {
+        if (emptyMessage) emptyMessage.style.display = 'none';
+
+        if (showGreen && greenContent) {
+            if (greenContent.style.display === 'none' || greenContent.style.display === '') {
+                greenContent.style.display = 'flex';
+                setTimeout(() => { greenContent.style.opacity = '1'; }, 50);
+            }
+        }
+        if (showBlue && blueContent) {
+            if (blueContent.style.display === 'none' || blueContent.style.display === '') {
+                blueContent.style.display = 'flex';
+                setTimeout(() => { blueContent.style.opacity = '1'; }, 50);
+            }
         }
     }
+
+    // Reveal specific segments cleanly
+    if (hasSec0Step2 && noteSec0Step2) {
+        noteSec0Step2.style.display = 'block';
+        setTimeout(() => { noteSec0Step2.style.opacity = '1'; }, 50);
+    }
+    if (hasSec0Step4 && noteSec0Step4) {
+        noteSec0Step4.style.display = 'block';
+        setTimeout(() => { noteSec0Step4.style.opacity = '1'; }, 50);
+    }
+    if (hasSec1Step1 && noteSec1Step1) {
+        noteSec1Step1.style.display = 'block';
+        setTimeout(() => { noteSec1Step1.style.opacity = '1'; }, 50);
+    }
+    if (hasSec2Step3 && noteSec2Step3) {
+        noteSec2Step3.style.display = 'block';
+        setTimeout(() => { noteSec2Step3.style.opacity = '1'; }, 50);
+    }
+    if (hasAiSec2 && noteAiSec2) {
+        noteAiSec2.style.display = 'block';
+        setTimeout(() => { noteAiSec2.style.opacity = '1'; }, 50);
+    }
+    if (hasSec3Patient && sec3PatientNotes) {
+        sec3PatientNotes.style.display = 'block';
+        setTimeout(() => { sec3PatientNotes.style.opacity = '1'; }, 50);
+    }
+    if (hasSec3Suggestion && sec3PatientNotesSuggestion) {
+        sec3PatientNotesSuggestion.style.display = 'block';
+        const suggTxt = localStorage.getItem('module3_sec3_suggestion');
+        if (suggTxt) {
+            const fbText = sec3PatientNotesSuggestion.querySelector('p');
+            if (fbText) fbText.innerText = `"${suggTxt}"`;
+        }
+        setTimeout(() => { sec3PatientNotesSuggestion.style.opacity = '1'; }, 50);
+    }
+
+    // Attempt inline logic textareas resize again just in case
+    setTimeout(() => {
+        if (typeof setupInlineNotes === 'function') {
+            setupInlineNotes();
+        }
+    }, 100);
 
     // Add Download Button if all 4 submodules are complete (unlockLevel >= 5)
     let unlockLevel = parseInt(localStorage.getItem('module3_unlockLevel') || '1');
@@ -214,7 +280,7 @@ function syncNotesState() {
     }
 }
 
-function triggerNotesUpdateAnimation() {
+function triggerNotesUpdateAnimation(elementId = null) {
     const notesPanel = document.getElementById('globalNotes');
     const toggleIcon = document.getElementById('notesToggleIcon');
     const blueContent = notesPanel?.querySelector('.blue-content');
@@ -242,16 +308,26 @@ function triggerNotesUpdateAnimation() {
             }, 200);
         }
 
-        // Add the glow class, then remove it after the 2s animation completes
-        notesPanel.classList.remove('notes-update-glow'); // reset if already playing
-        // Small delay to trigger reflow so the animation restarts
+        // Target specific element if provided
+        if (elementId) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.classList.remove('notes-update-glow');
+                setTimeout(() => el.classList.add('notes-update-glow'), 10);
+                setTimeout(() => el.classList.remove('notes-update-glow'), 2200);
+                return; // Exit early so entire panel doesn't glow
+            }
+        }
+
+        // Otherwise glow the entire panel
+        notesPanel.classList.remove('notes-update-glow');
         setTimeout(() => {
             notesPanel.classList.add('notes-update-glow');
         }, 10);
 
         setTimeout(() => {
             if (notesPanel) notesPanel.classList.remove('notes-update-glow');
-        }, 2200); // slightly longer than the 2s css animation
+        }, 2200);
     }
 }
 

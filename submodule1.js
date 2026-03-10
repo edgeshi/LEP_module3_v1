@@ -158,6 +158,11 @@ function renderSection0Page2(container) {
     nextBtn.style.display = 'inline-flex';
     nextBtn.innerHTML = 'Continue to Learner Activity &rarr;';
     nextBtn.onclick = () => {
+        // Unlock note: Communication Triangle
+        localStorage.setItem('module3_note_sec0_step2', 'true');
+        if (typeof syncNotesState === 'function') syncNotesState();
+        if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation('note-sec0-step2');
+
         nextStep();
         const nextBtnUpdated = document.getElementById('nextBtn');
         nextBtnUpdated.innerHTML = 'Continue to Section 1 &rarr;';
@@ -386,6 +391,11 @@ function renderSection0Page4(container) {
     nextBtn.style.display = 'inline-flex';
     nextBtn.innerHTML = 'Continue to Section 1 Planning &rarr;';
     nextBtn.onclick = () => {
+        // Unlock note: Interpreting Methods
+        localStorage.setItem('module3_note_sec0_step4', 'true');
+        if (typeof syncNotesState === 'function') syncNotesState();
+        if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation('note-sec0-step4');
+
         nextStep();
         const nextBtnUpdated = document.getElementById('nextBtn');
         nextBtnUpdated.innerHTML = 'Continue <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
@@ -500,10 +510,14 @@ function renderSection1Page1(container) {
         }
 
         addToNotesBtn.addEventListener('click', () => {
+            // Unlock note: Planning a Session
+            localStorage.setItem('module3_note_sec1_step1', 'true');
+
             let currentData = localStorage.getItem('module3_notesUnlocked');
             let currentUnlocked = currentData ? JSON.parse(currentData) : [];
-            if (!currentUnlocked.includes('green')) {
-                currentUnlocked.push('green');
+            // "Planning a Session" is now in the blue column, so we unlock 'blue'
+            if (!currentUnlocked.includes('blue')) {
+                currentUnlocked.push('blue');
                 localStorage.setItem('module3_notesUnlocked', JSON.stringify(currentUnlocked));
             }
 
@@ -513,7 +527,7 @@ function renderSection1Page1(container) {
             addToNotesBtn.style.cursor = 'default';
 
             if (typeof syncNotesState === 'function') syncNotesState();
-            if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation();
+            if (typeof triggerNotesUpdateAnimation === 'function') triggerNotesUpdateAnimation('note-sec1-step1');
         });
     }
 

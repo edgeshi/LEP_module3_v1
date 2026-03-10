@@ -1,0 +1,231 @@
+                <!-- Green Content -->
+                <div class="green-content"
+                    style="flex: 0 0 240px; opacity: 0; transition: opacity 0.3s; display: none; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: visible; padding-right: 10px;">
+                    <div
+                        style="background: rgba(34, 197, 94, 0.1); color: #15803d; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1.5rem; border: 1px solid rgba(34, 197, 94, 0.3);">
+                        Always Bear in Mind
+                    </div>
+                    <div id="note-sec0-step2" style="display: none;">
+                        <h4
+                            style="color: #16a34a; margin-bottom: 2rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #16a34a; padding-bottom: 0.2rem;">
+                            Communication Triangle</h4>
+
+                        <div class="graphic-container"
+                            style="position: relative; width: 100%; height: 260px; min-height: 260px; padding: 20px 0; margin-top: 10px; display: block; overflow: visible;">
+                            <svg class="triangle-svg" viewBox="0 0 300 260"
+                                style="position: absolute; top: 0; left: 0; transform: none; width: 100%; height: 100%; z-index: 1;">
+                                <path d="M150 20 L255 230 L45 230 Z" fill="none" stroke="#16a34a" stroke-width="3"
+                                    stroke-dasharray="6,4" />
+                            </svg>
+
+                            <div class="node-container rn-node"
+                                style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); z-index: 2; text-align: center;">
+                                <div class="node"
+                                    style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;">
+                                    <img src="./assets/nurse.png" style="width: 100%; height: 100%; object-fit: cover;"
+                                        alt="RN">
+                                </div>
+                                <div class="node-text"
+                                    style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #16a34a;">RN
+                                </div>
+                            </div>
+
+                            <div class="node-container int-node"
+                                style="position: absolute; bottom: 0; right: 8px; z-index: 2; text-align: center;">
+                                <div class="node"
+                                    style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;">
+                                    <img src="./assets/interpreter.png"
+                                        style="width: 100%; height: 100%; object-fit: cover;" alt="Interpreter">
+                                </div>
+                                <div class="node-text"
+                                    style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #16a34a;">
+                                    Interpreter</div>
+                            </div>
+
+                            <div class="node-container pat-node"
+                                style="position: absolute; bottom: 0; left: 8px; z-index: 2; text-align: center;">
+                                <div class="node"
+                                    style="width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid #16a34a; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;">
+                                    <img src="./assets/patient.png"
+                                        style="width: 100%; height: 100%; object-fit: cover;" alt="Patient">
+                                </div>
+                                <div class="node-text"
+                                    style="font-size: 0.85rem; margin-top: 6px; font-weight: 700; color: #16a34a;">
+                                    Patient
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="note-sec0-step4" style="margin-top: 1.5rem; width: 100%; text-align: left; display: none;">
+                        <h5
+                            style="color: #16a34a; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px dotted #16a34a; padding-bottom: 0.2rem;">
+                            Interpreting Methods</h5>
+                        <ul
+                            style="padding-left: 1.2rem; font-size: 0.85rem; line-height: 1.4; color: #166534; margin-top: 0.5rem;">
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span>Turn-taking with the interpreter</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNoteGreen-1"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span>Looking at the patient</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNoteGreen-2"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="note-sec1-step1" style="margin-top: 1.5rem; width: 100%; text-align: left; display: none;">
+                        <h5
+                            style="color: #16a34a; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px dotted #16a34a; padding-bottom: 0.2rem;">
+                            Planning a Session</h5>
+                        <ul
+                            style="padding-left: 1.2rem; font-size: 0.85rem; line-height: 1.4; color: #166534; margin-top: 0.5rem;">
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span>Get consent and collect information</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNoteGreen-3"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span>Book an appointment</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNoteGreen-4"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span>Prepare for the session upfront</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNoteGreen-5"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Blue Content -->
+                <div class="blue-content"
+                    style="flex: 1; opacity: 0; transition: opacity 0.3s; color: #1e3a8a; display: none; flex-direction: column; justify-content: flex-start; border-left: 1px solid #dbeafe; padding-left: 1.5rem; min-width: 320px; overflow-y: auto; padding-right: 10px;">
+
+                    <div
+                        style="align-self: flex-start; background: rgba(30, 58, 138, 0.1); color: #1e40af; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1.5rem; border: 1px solid rgba(30, 58, 138, 0.3);">
+                        Only Follow at Actions
+                    </div>
+
+                    <div id="note-sec2-step3" style="display: none;">
+                        <h4
+                            style="color: #1e3a8a; margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.6rem;">
+                            Pre-briefing</h4>
+                        <div class="hover-note-line" style="margin-bottom: 0.2rem;">
+                            <p style="color: #1e3a8a; font-size: 1rem; line-height: 1.5; font-weight: 500; margin: 0;">
+                                A successful pre-briefing with interpreters should cover:
+                            </p>
+                            <button class="add-note-btn" title="Add note">+</button>
+                            <textarea class="inline-user-note hidden" id="userNote-1"
+                                placeholder="Add personal note..."></textarea>
+                        </div>
+
+                        <ul
+                            style="margin-top: 0.5rem; padding-left: 1.4rem; font-size: 0.95rem; line-height: 1.6; font-weight: 500; color: #1e3a8a;">
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Goal:</strong> The primary purpose of the interaction.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNote-2"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Jargon info:</strong> Expected medical terms to clarify.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNote-3"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Patient risk:</strong> Mental state and health literacy.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNote-4"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Culture question:</strong> Inviting interpreter insights on
+                                    culture.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNote-5"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Turn-taking rule:</strong> Short, one-sentence pacing.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNote-6"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="note-ai-sec2"
+                        style="display: none; margin-top: 1.5rem; background: #eff6ff; padding: 1.2rem; border-radius: 8px; border: 1px solid #bfdbfe; position: relative;">
+                        <span
+                            style="position: absolute; top: -10px; left: 15px; background: #eff6ff; padding: 0 8px; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #1e3a8a; border: 1px solid #bfdbfe; border-radius: 10px;">AI
+                            Personalized Feedback</span>
+                        <p id="notesFeedback"
+                            style="font-size: 0.95rem; color: #172554; margin: 0; font-style: italic;">
+                            "Excellent identification of key terms! Keep in mind to also establish explicit
+                            turn-taking
+                            rules upfront to ensure a smooth flow."
+                        </p>
+                    </div>
+
+                    <div id="sec3PatientNotes" style="display: none; margin-top: 1.5rem;">
+                        <h4
+                            style="color: #1e3a8a; margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 2px solid #dbeafe; padding-bottom: 0.6rem;">
+                            Pre-briefing with the patient
+                        </h4>
+                        <div class="hover-note-line" style="margin-bottom: 0.2rem;">
+                            <p style="color: #1e3a8a; font-size: 1rem; line-height: 1.5; font-weight: 500; margin: 0;">
+                                Good pre-briefing with the patient should FIRST confirm the interpretation method
+                                and
+                                devices usage:
+                            </p>
+                            <button class="add-note-btn" title="Add note">+</button>
+                            <textarea class="inline-user-note hidden" id="userNotePat-1"
+                                placeholder="Add personal note..."></textarea>
+                        </div>
+
+                        <ul
+                            style="margin-top: 0.5rem; padding-left: 1.4rem; font-size: 0.95rem; line-height: 1.6; font-weight: 500; color: #1e3a8a;">
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Interpretation:</strong> Introduce names of the nurse and the
+                                    interpreter.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNotePat-2"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Turn-taking rules:</strong> Keep sentences short and pause for
+                                    interpreting.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNotePat-3"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                            <li class="hover-note-line" style="margin-bottom: 0.4rem;">
+                                <span><strong>Devices usage:</strong> Explain how to use the devices to listen and
+                                    speak.</span>
+                                <button class="add-note-btn" title="Add note">+</button>
+                                <textarea class="inline-user-note hidden" id="userNotePat-4"
+                                    placeholder="Add personal note..."></textarea>
+                            </li>
+                        </ul>
+                        <div id="sec3PatientNotesSuggestion"
+                            style="display: none; margin-top: 1.5rem; background: #eff6ff; padding: 1.2rem; border-radius: 8px; border: 1px solid #bfdbfe; position: relative;">
+                            <span
+                                style="position: absolute; top: -10px; left: 15px; background: #eff6ff; padding: 0 8px; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #1e3a8a; border: 1px solid #bfdbfe; border-radius: 10px;">AI
+                                Personalized Feedback</span>
+                            <p id="sec3PatientNotesFeedbackText"
+                                style="font-size: 0.95rem; color: #172554; margin: 0; font-style: italic;">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
